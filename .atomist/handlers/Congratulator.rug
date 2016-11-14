@@ -1,0 +1,10 @@
+handler Congratulator
+
+/issue[.closed()]/resolvedBy/committer/person/chatIdentity
+
+{
+   for each (var chatUser in matches) {
+     chatUser.directMessage("You are a hero! " +
+     "You closed issue [" + issue.title() + "] with commit " + issue.resolvedBy().sha());
+    }
+}
