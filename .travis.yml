@@ -1,0 +1,28 @@
+dist: trusty
+sudo: false
+language: java
+jdk:
+- oraclejdk8
+branches:
+  except:
+  - /\+travis\d+$/
+env:
+  global:
+  - MAVEN_BASE_URL=https://atomist.jfrog.io/atomist
+  - secure: xyNqXYVYx9WWskmrBZIuYew7wn3tbTmkrRB1E8ocdmoqh76dFXlz+bIOYEu4gXKkwe+onveNPHth01WyROdu0VQQG0B6AmptCtg52MKpBVWLCnf8byrL4eW8EEr7VwAA55uL/HMDUbNm7K5c//7oQHPVC3Z21BUd3W+gp8waW3fcN4gESjQ1mYP04EHcDmwVC0aPOcxQwECS/yIRuvq/6nDSTQ/gp2PAsk0kfjHQ1custOt787nkQlG530yUWJ86u6jyhXAVmy2zZJ90Z6PlWDDpaIbZKAIUdOHn3aZST057xaSrycI34ei+axQ44XchXzHO+ELGubuz/4NDHu1sSdf8Xgb/L05eBU1AFzhvo4FKq41pAPZl2A0olUq0SzEKpWABH9Th12YtCXV9LukupnCvkFmDFtXh5z0j7IjPzCi2yo1Lr15183UfmbKa94T94vy86gSrK5JW2I3LNTTeEV6vA7L8PK3tGyax5Ei0ej4uG8zJi+cJ85/FQ3GPNa6ijUewEuHd4RFyNlZVMdp7BUBDxQ6K+piSTepdDjXWmUUkCeyEGhkb3WkztSjwVc4b3gJSPTpNjSG0xhVD7GRZXIR9uWtk5Rx+o7dd66+LsyZ5f47feeLb3AjHOqJxuUvZTUjlIh/fPFWY/hibTyQpHYtfAgJRM+QmPTx5Pqrv8Fg=
+  - secure: V8d2pZS2Pez4yRP1pUGQ72TieuhTXXd3n3ofBpEv1qK+TbnxYChDuYT3QW/gJ4GQQyZFs/qiCE6V/ar5OtWN6TCR/9eJzii2DGQ/YYsghkEnKoOkMNIpEnrZhOxpSiCwNXrezTpyNA5pWFpAehd4BE7pQIx4kLcElKHbRyzoe3pRdZwrpWru74rX2hks2ZASJN/H/T9SMuDgTwZydTRaEYIMG13lCcGbBnJvAuSzzJuT2uLgL657wGY0rr7IVvTDfVGPDpRZ5Td8ZJgTfjg3XXaN+eXKXXccGOKc6JTCapDXsFZp75dO+GZScGqVqZp2Kt1k0FLF5RlOzRiU6j2jtlF0bdrdS3PaeHfW6WCYL0Au8rc7sy3tGYneXPOTVg7CH5tM2h0YdcXj2Bq64UFmgJt5zaiCKxitIBknJCXQL0HVF6kMRlDY0Z4CVEgnfhAXzzNrZUNeWc6Uig4iDmy/qKJK6jf1r8/9ZX+1BzeNzSQTf9TFIgmp2olH9Faize6VNUXzY9d1AvKNZHdeZBgFlqsfOB43CVWssPw7O3m+seIvkTwI3xeIpzMtrBvVS1AtyUq2ALKjw0NmG68Cu9zhXQg8YEEXhPcemwaalEVX+SOk8D+NJLx/MAcIDxTDfKWeh0qtbWOZVybsh1+bhrno6jUJMhHdQPDLhhJabzI7nT0=
+  - secure: egv4+Gm9aEui/5Z1nMLGd4WObCGBn8SoaJk8+72U9YJZneKzeVp62k4Mif3fithoN3xzGj2mfVx9cD3YRcHIu/jqSV+T9lahf+U2IYpLuxNwRCdhArNr5zw2Xxm6o3bnZ4XaUjK4CclvQF+SXdA3e1X4bmULgkaw2jPLszndWahd+kcTeEutMZGipMqZlYxGuzl7WHadppJKK3gIyo+Z6Vx0IDx8H3WFHEf7eS7rgtsUZqqHtd9LxgkT9NoZwmfbPW1RSVwqucFdtkTeaKKCCAY238qNyiUhK4c7X5jG2/fiMGBRBaoMbdh3eMyYSD5UK423Rir5kmdYHOHgXMGbfUVcbcgA1t3CVEMRIdBBaEcQ+CYdabh8X+XKGM1n4WkCSU19iLx9QH/2pbZqcr6CDyEJ4esfXxFCb6pLDXVxGRumQv5h0SRnbgcVwr19+QZ5BqcD/EjojNeHLhpEg3Bh4jgi0YTEQw6SVdOwWmymPIF+FdhWfMR/B6E/jYAXFN8fEQQ/SMc6LKlO3vKEDFuOYCeGe+Sg8U/l7f9FUlinsNK7JbifLsms45zgT1YcdVPFP8HZblk8WHPPR15mKzJ5NfNDkl4jhfYA562dB7suHg0aki7QABUrsBNS/CEMCQBoGD9a6TnsUWsE4HDOTaq5+iKPwZOLJjGXpe6il5tfPf4=
+install:
+- nvm install 6.9.2
+script: bash .atomist/build/travis-build.bash
+notifications:
+  email: false
+  webhooks:
+    urls:
+    - https://webhook.atomist.com/travis
+    on_success: always
+    on_failure: always
+    on_start: always
+cache:
+  directories:
+  - $HOME/.atomist
