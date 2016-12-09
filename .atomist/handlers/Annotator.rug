@@ -1,7 +1,0 @@
-handler Annotator
-
-/issue/*:repo/project/src/main/java//*:file/->java.class
-
-with matches m begin
-   do addAnnotation "com.foo" "Bar"
-end

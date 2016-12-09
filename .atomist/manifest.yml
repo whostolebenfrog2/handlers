@@ -1,16 +1,10 @@
 group: atomisthqa
 artifact: handlers
-version: "0.1.0"
+version: "0.1.6"
 
-requires: "1.2.0-20161114061934"
+requires: "0.5.2"
 
 dependencies:
 
 extensions:
-  - "com.atomist:model:0.1.0"
-  - "org.springframework:spring-aop:4.3.3.RELEASE"
-  - "org.springframework:spring-context:4.3.4.RELEASE"
-  - "org.springframework:spring-core:4.3.4.RELEASE"
-  - "org.springframework:spring-beans:4.3.4.RELEASE"
-  - "com.atomist:service-lib:0.0.5-20161114132710"
-  - "com.atomist:botlet-lib:0.2.2-20161107013633"
+  - "com.atomist:model:0.1.1"
