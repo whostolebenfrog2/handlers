@@ -63,6 +63,12 @@ function main () {
         fi
     fi
 
+    local build_dir=.atomist/build
+    if ! cp "$build_dir/cli-build.yml" $HOME/.atomist/cli.yml; then
+        err "failed to install cli build configuration"
+        return 1
+    fi
+
     msg "running tests"
     if ! $rug test; then
         err "rug test failed"
@@ -91,7 +97,6 @@ function main () {
         err "failed to extract archive version: $archive_version"
         return 1
     fi
-    local build_dir=.atomist/build
     local project_version cli_yml
     if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
         if [[ $archive_version != $TRAVIS_TAG ]]; then
@@ -114,7 +119,7 @@ function main () {
     msg "archive version: $project_version"
 
     if [[ $TRAVIS_BRANCH == master || $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        if ! "$cli_yml" $HOME/.atomist/cli.yml; then
+        if ! cp "$cli_yml" $HOME/.atomist/cli.yml; then
             err "failed to install $cli_yml"
             return 1
         fi
