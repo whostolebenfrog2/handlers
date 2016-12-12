@@ -1,10 +1,10 @@
 group: atomisthqa
 artifact: handlers
-version: "0.1.6"
+version: "0.1.8"
 
 requires: "0.5.2"
 
 dependencies:
 
 extensions:
-  - "com.atomist:model:0.1.1"
+  - "com.atomist:model:0.1.2"
