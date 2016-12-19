@@ -7,7 +7,7 @@ class HelloWorld implements Executor {
     name: string = "HelloWorld"
     execute(services: Services): Result {
         for (let s of services.services()) {
-            s.service().messageBuilder().say(`Hello from $${s.service().name()}`).send()
+            s.service().messageBuilder().say(`Hello from ${s.service().name()}`).send()
         }
         return new Result(Status.Success, "OK")
     }
