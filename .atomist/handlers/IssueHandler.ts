@@ -1,12 +1,20 @@
-declare var atomist
+import {Atomist} from '@atomist/rug/operations/Handler'
+import {TreeNode} from '@atomist/rug/tree/PathExpression'
+declare var atomist: Atomist
 
-atomist.on("/issue[.state()='open']", m => {
+atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
    let issue = m.root()
-   atomist.messageBuilder().regarding(issue).send()
+   let message = atomist.messageBuilder().regarding(issue)
+   message.withAction(message.actionRegistry().findByName("AddLicense"))
+   message.withAction(message.actionRegistry().findByName("HelloWorld"))
+   message.send()
 })
 
-atomist.on("/issue[.state()='closed']", m => {
+atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
    let issue = m.root()
-   atomist.messageBuilder().say("this next message is for a closed event").send()
-   atomist.messageBuilder().regarding(issue).send()
+   atomist.messageBuilder().say("this next message is for :trump:").send()
+   let message = atomist.messageBuilder().regarding(issue)
+   message.withAction(message.actionRegistry().findByName("AddLicense"))
+   message.withAction(message.actionRegistry().findByName("HelloWorld"))
+   message.send()
 })

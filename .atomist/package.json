@@ -1,6 +1,6 @@
 {
   "name": "@atomisthqa/handlers",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Handlers for Atomist",
   "keywords": [
     "Atomist",
@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/atomisthqa/handlers.git",
   "dependencies": {
-    "@atomist/rug": "0.5.4"
+    "@atomist/rug": "0.7.1"
   }
 }
