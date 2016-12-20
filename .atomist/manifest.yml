@@ -8,4 +8,4 @@ dependencies:
 
 extensions:
   - "com.atomist:model:0.2.0-20161219172334"
-  - "com.atomist:project-decorator:0.1.0"
+  - "com.atomist:build-command:0.1.0"
