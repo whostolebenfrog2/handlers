@@ -2,9 +2,10 @@ group: atomisthqa
 artifact: handlers
 version: "0.3.4"
 
-requires: "0.7.1"
+requires: "0.7.2-SNAPSHOT"
 
 dependencies:
 
 extensions:
   - "com.atomist:model:0.2.0-20161219172334"
+  - "com.atomist:project-decorator:0.1.0"

@@ -11,7 +11,6 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
 
 atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
    let issue = m.root()
-   atomist.messageBuilder().say("this next message is for :trump:").send()
    let message = atomist.messageBuilder().regarding(issue)
    message.withAction(message.actionRegistry().findByName("HelloWorld"))
    message.send()
