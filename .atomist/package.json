@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/atomisthqa/handlers.git",
   "dependencies": {
-    "@atomist/rug": "0.8.0"
+    "@atomist/rug": "0.8.0",
+    "@atomist/github": "0.1.1"
   }
 }
