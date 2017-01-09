@@ -8,3 +8,4 @@ dependencies:
 
 extensions:
   - "com.atomist:model:0.3.1-20170106204537"
+#  - "com.atomist:github-commands:0.1.0-SNAPSHOT"
