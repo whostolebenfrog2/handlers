@@ -7,19 +7,27 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
    let message = atomist.messageBuilder().regarding(issue)
 
    let assign = message.actionRegistry().findByName("AssignIssue")
-   assign.parameters().push({"name":"number", "value":issue.number()})
+   assign = message.actionRegistry().bindParameter(assign, "number", issue.number())
    message.withAction(assign)
 
    let label = message.actionRegistry().findByName("LabelIssue")
-   label.parameters().push({"name":"number", "value":issue.number()})
+   label = message.actionRegistry().bindParameter(label, "number", issue.number())
    message.withAction(label)
+
+   let close = message.actionRegistry().findByName("CloseIssue")
+   close = message.actionRegistry().bindParameter(close, "number", issue.number())
+   message.withAction(close)
 
    message.send()
 })
 
 atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
-   let issue = m.root()
+   let issue = m.root() as any
    let message = atomist.messageBuilder().regarding(issue)
-   //message.withAction(message.actionRegistry().findByName("Reopen"))
+
+   let reopen = message.actionRegistry().findByName("ReopenIssue")
+   reopen = message.actionRegistry().bindParameter(reopen, "number", issue.number())
+   message.withAction(reopen)
+
    message.send()
 })

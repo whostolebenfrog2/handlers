@@ -5,29 +5,27 @@ import {Result, Status, Parameter} from "@atomist/rug/operations/RugOperation"
 import {GitHubService} from "@atomist/github/core/Core"
 
 interface Parameters {
-    number: number
-    label: string
+    tag_name: string
     owner: string
     repo: string
     token: string
 }
 
-var labelIssue: Executor = {
-    description: "Label a GitHub issue",
-    name: "LabelIssue",
+var createRelease: Executor = {
+    description: "Create a GitHub release",
+    name: "CreateRelease",
     parameters: [
         // TODO proper patterns and validation
-        { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true},
-        { name: "label", description: "Label", pattern: "^.*$", maxLength: 100, required: true},
-        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true},
-        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true},
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: true}
+        { name: "tag_name", description: "GitHub Tag", pattern: "^.*$", maxLength: 100, required: false, default: ""},
+        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"]},
+        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"]},
+        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/user_token"]}
     ],
     execute(services: Services, p: Parameters): Result {
 
         let _services: any = services
         let githubService = _services.github() as GitHubService
-        let status = githubService.labelIssue(p.number, p.label, p.owner, p.repo, p.token)
+        let status = githubService.createRelease(p.tag_name, p.owner, p.repo, p.token)
         _services.messageBuilder().say(status.message()).send()
         if (status.success()) {
             return new Result(Status.Success, "OK")
