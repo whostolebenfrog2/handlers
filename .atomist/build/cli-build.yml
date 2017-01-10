@@ -11,6 +11,9 @@ remote-repositories:
   rug-types:
     publish: false
     url: "https://atomist.jfrog.io/atomist/libs-release"
+  rug-types-dev:
+    publish: false
+    url: "https://atomist.jfrog.io/atomist/libs-dev"    
   rug-private-deps:
     publish: false
     url: "https://sforzando.artifactoryonline.com/sforzando/libs-release"
