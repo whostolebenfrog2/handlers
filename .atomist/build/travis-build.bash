@@ -55,13 +55,13 @@ function main () {
     fi
     rug="$rug -qX"
 
-    if [[ -f .atomist/package.json ]]; then
-        msg "running npm install"
-        if ! ( cd .atomist && npm install ); then
-            err "npm install failed"
-            return 1
-        fi
-    fi
+    #if [[ -f .atomist/package.json ]]; then
+    #    msg "running npm install"
+    #    if ! ( cd .atomist && npm install ); then
+    #        err "npm install failed"
+    #        return 1
+    #    fi
+    #fi
 
     local build_dir=.atomist/build
     if ! cp "$build_dir/cli-build.yml" $HOME/.atomist/cli.yml; then
