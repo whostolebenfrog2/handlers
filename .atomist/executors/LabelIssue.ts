@@ -15,13 +15,15 @@ interface Parameters {
 var labelIssue: Executor = {
     description: "Label a GitHub issue",
     name: "LabelIssue",
+    tags: ["atomist/intent=label issue"],
     parameters: [
         // TODO proper patterns and validation
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true},
         { name: "label", description: "Label", pattern: "^.*$", maxLength: 100, required: true},
         { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true},
         { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true},
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: true}
+        // TODO marking it required: false will prevent the bot to ask for it
+        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/user_token"]}
     ],
     execute(services: Services, p: Parameters): Result {
 

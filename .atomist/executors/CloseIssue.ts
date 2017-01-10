@@ -19,7 +19,8 @@ var closeIssue: Executor = {
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true},
         { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"]},
         { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"]},
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/user_token"]}
+        // TODO marking it required: false will prevent the bot to ask for it
+        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/user_token"]}
     ],
     execute(services: Services, p: Parameters): Result {
 

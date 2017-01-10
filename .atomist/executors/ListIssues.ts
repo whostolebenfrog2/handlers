@@ -12,10 +12,12 @@ interface Parameters {
 var listIssues: Executor = {
     description: "Close a GitHub issue",
     name: "ListIssues",
+    tags: ["atomist/intent=list issues"],
     parameters: [
         // TODO proper patterns and validation
         { name: "days", description: "Days", pattern: "^.*$", maxLength: 100, required: false},
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/user_token"]}
+        // TODO marking it required: false will prevent the bot to ask for it
+        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/user_token"]}
     ],
     execute(services: Services, p: Parameters): Result {
 
