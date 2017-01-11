@@ -18,6 +18,10 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
    close = message.actionRegistry().bindParameter(close, "number", issue.number())
    message.withAction(close)
 
+   let comment = message.actionRegistry().findByName("CommentIssue")
+   comment = message.actionRegistry().bindParameter(comment, "number", issue.number())
+   message.withAction(comment)
+
    message.send()
 })
 
