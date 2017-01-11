@@ -1,8 +1,8 @@
-import {Executor} from "@atomist/rug/operations/Executor"
-import {Services} from "@atomist/rug/model/Core"
-import {Result, Status, Parameter} from "@atomist/rug/operations/RugOperation"
+import { Executor } from "@atomist/rug/operations/Executor"
+import { Services } from "@atomist/rug/model/Core"
+import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
-import {GitHubService, Issue} from "@atomist/github/core/Core"
+import { GitHubService, Issue } from "@atomist/github/core/Core"
 
 interface Parameters {
     days: number
@@ -37,7 +37,7 @@ var listIssues: Executor = {
                }`
                 }
                 else {
-                  return `{
+                    return `{
                 "fallback": "#${i.number()}: ${i.title()}",
                 "author_icon": "http://images.atomist.com/rug/issue-open.png",
                 "color": "#6cc644",
@@ -49,7 +49,7 @@ var listIssues: Executor = {
             _services.messageBuilder().say(attachments).send()
         }
         else {
-          _services.messageBuilder().say(`Looks like you really didn't crush it. No issues found for the last ${p.days} day(s)`).send()
+            _services.messageBuilder().say(`Looks like you really didn't crush it. No issues found for the last ${p.days} day(s)`).send()
         }
         return new Result(Status.Success, "OK")
     }

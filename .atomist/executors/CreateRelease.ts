@@ -1,8 +1,8 @@
-import {Executor} from "@atomist/rug/operations/Executor"
-import {Services} from "@atomist/rug/model/Core"
-import {Result, Status, Parameter} from "@atomist/rug/operations/RugOperation"
+import { Executor } from "@atomist/rug/operations/Executor"
+import { Services } from "@atomist/rug/model/Core"
+import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
-import {GitHubService} from "@atomist/github/core/Core"
+import { GitHubService } from "@atomist/github/core/Core"
 
 interface Parameters {
     tag_name: string
@@ -17,18 +17,18 @@ var createRelease: Executor = {
     tags: ["atomist/intent=create release"],
     parameters: [
         // TODO proper patterns and validation
-        { name: "tag_name", description: "GitHub Tag", pattern: "^.*$", maxLength: 100, required: false, default: ""},
-        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"]},
-        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"]},
+        { name: "tag_name", description: "GitHub Tag", pattern: "^.*$", maxLength: 100, required: false, default: "" },
+        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
+        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
         // TODO marking it required: false will prevent the bot to ask for it
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/user_token"]}
+        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/user_token"] }
     ],
     execute(services: Services, p: Parameters): Result {
 
         // Bot sends not-set for empty tags
         let tagName = p.tag_name
         if (tagName == "not-set") {
-          tagName = ""
+            tagName = ""
         }
 
         let _services: any = services
@@ -39,7 +39,7 @@ var createRelease: Executor = {
             return new Result(Status.Success, "OK")
         }
         else {
-          return new Result(Status.Error, status.message())
+            return new Result(Status.Error, status.message())
         }
     }
 }
