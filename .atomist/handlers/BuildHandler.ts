@@ -9,8 +9,13 @@ atomist.on<TreeNode, TreeNode>("/build", m => {
      message.withAction(message.actionRegistry().findByName("CreateRelease"))
    }
    else if (build.status() == "Failed" || build.status() == "Broken") {
-     let repo = build.repo().owner() + "/" + build.repo().name()
+     console.log(">>>>>>>>>>>>>>>>> broken build")
+     if (build.commit().committer() != null) {
+       console.log(">>>>>>>>>>>>>>>>> committer")
+     }
      if (build.commit().committer().person() != null) {
+       console.log(">>>>>>>>>>>>>>>>> person")
+        let repo = build.repo().owner() + "/" + build.repo().name()
         build.commit().committer().person().chatIdentity().directMessage(`Build on ${repo} broke after your last commit: ${build.build_url()}`)
      }
    }

@@ -49,7 +49,7 @@ var listIssues: Executor = {
             _services.messageBuilder().say(attachments).send()
         }
         else {
-          _services.messageBuilder().say(`No issues found for the last ${p.days} day(s)`).send()
+          _services.messageBuilder().say(`Looks like you really didn't crush it. No issues found for the last ${p.days} day(s)`).send()
         }
         return new Result(Status.Success, "OK")
     }
