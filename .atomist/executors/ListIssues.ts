@@ -37,7 +37,7 @@ var listIssues: Executor = {
                }`
                 }
                 else {
-                    return `{
+                  return `{
                 "fallback": "#${i.number()}: ${i.title()}",
                 "author_icon": "http://images.atomist.com/rug/issue-open.png",
                 "color": "#6cc644",
