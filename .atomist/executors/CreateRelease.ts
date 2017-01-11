@@ -25,6 +25,12 @@ var createRelease: Executor = {
     ],
     execute(services: Services, p: Parameters): Result {
 
+        // Bot sends not-set for empty tags
+        let tagName = p.tag_name
+        if (tagName == "not-set") {
+          tagName = ""
+        }
+
         let _services: any = services
         let githubService = _services.github() as GitHubService
         let status = githubService.createRelease(p.tag_name, p.owner, p.repo, p.token)
