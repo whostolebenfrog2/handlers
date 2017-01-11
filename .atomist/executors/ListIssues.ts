@@ -2,7 +2,7 @@ import {Executor} from "@atomist/rug/operations/Executor"
 import {Services} from "@atomist/rug/model/Core"
 import {Result, Status, Parameter} from "@atomist/rug/operations/RugOperation"
 
-import {GitHubService} from "@atomist/github/core/Core"
+import {GitHubService, Issue} from "@atomist/github/core/Core"
 
 interface Parameters {
     days: number
@@ -23,13 +23,30 @@ var listIssues: Executor = {
 
         let _services: any = services
         let githubService = _services.github() as GitHubService
-        let status = githubService.listIssues(p.days, p.token)
-        _services.messageBuilder().say(status.message()).send()
-        if (status.success()) {
-            return new Result(Status.Success, "OK")
-        }
-        else {
-          return new Result(Status.Error, status.message())
-        }
+        let issues: Issue[] = githubService.listIssues(p.days, p.token)
+
+        let attachments = `{"attachments": [` + issues.map(i => {
+          if (i.state() == "closed") {
+              return `{
+                  "fallback": "#${i.number()}: ${i.title()}",
+                  "author_icon": "http://images.atomist.com/rug/issue-closed.png",
+                  "color": "#bd2c00",
+                  "author_link": "${i.issueUrl()}",
+                  "author_name": "#${i.number()}: ${i.title()}"
+               }`
+          }
+          else {
+            return `{
+                "fallback": "#${i.number()}: ${i.title()}",
+                "author_icon": "http://images.atomist.com/rug/issue-open.png",
+                "color": "#6cc644",
+                "author_link": "${i.issueUrl()}",
+                "author_name": "#${i.number()}: ${i.title()}"
+             }`
+          }
+        }).join(",") + "]}"
+
+        _services.messageBuilder().say(attachments).send()
+        return new Result(Status.Success, "OK")
     }
 }
