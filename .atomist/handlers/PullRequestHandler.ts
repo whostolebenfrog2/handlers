@@ -2,7 +2,7 @@ import {Atomist} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/pullRequest", m => {
+atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='open']", m => {
    let pr = m.root() as any
    let message = atomist.messageBuilder().regarding(pr)
 

@@ -10,7 +10,7 @@ atomist.on<TreeNode, TreeNode>("/build", m => {
 
    if (build.status() == "Passed" || build.status() == "Fixed") {
      message.withAction(message.actionRegistry().findByName("CreateRelease"))
-     if (build.status() == "Fixed") {
+     if (build.status() == "Fixed" && build.commit().committer().person() != null) {
         mb.say(`CI build of repo ${repo} is now fixed`).on(build.commit().committer().person().chatIdentity().chatId()).send()
      }
    }
