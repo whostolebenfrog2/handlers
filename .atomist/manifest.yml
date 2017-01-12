@@ -9,4 +9,4 @@ dependencies:
 
 extensions:
   - "com.atomist:github-commands:0.2.0"
-  - "com.atomist:model:0.3.1-20170111183219"
+  - "com.atomist:model:0.3.1-20170112143735"
