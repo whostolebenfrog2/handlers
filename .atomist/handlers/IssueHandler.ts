@@ -36,7 +36,7 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
    message.send()
 })
 
-atomist.on<TreeNode, TreeNode>("/comment", m => {
+atomist.on<TreeNode, TreeNode>("/gitHubIssueComment", m => {
    let issueComment = m.root() as any
    let message = atomist.messageBuilder().regarding(issueComment)
 
