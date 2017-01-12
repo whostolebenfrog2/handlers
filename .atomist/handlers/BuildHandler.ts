@@ -21,7 +21,7 @@ atomist.on<TreeNode, TreeNode>("/build", m => {
         let commit = "`" + build.commit().sha() + "`"
         mb.say(`CI build of repo ${repo} failed after your last commit ${commit}: ${build.build_url()}`).on(build.commit().committer().person().chatIdentity().chatId()).send()
      }
-
+ 
      // Attach restart action
      let restart = message.actionRegistry().findByName("RestartBuild")
      restart = message.actionRegistry().bindParameter(restart, "build_id", build.id())

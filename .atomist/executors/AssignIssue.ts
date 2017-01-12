@@ -4,6 +4,8 @@ import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
 import { GitHubService } from "@atomist/github/core/Core"
 
+//import {UserToken} from './Parameters'
+
 interface Parameters {
     number: number
     assignee: string
