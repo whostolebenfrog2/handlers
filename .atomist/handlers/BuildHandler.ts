@@ -12,19 +12,22 @@ atomist.on<TreeNode, TreeNode>("/build", m => {
    if (build.status() == "Passed" || build.status() == "Fixed") {
      message.withAction(message.actionRegistry().findByName("CreateRelease"))
      if (build.status() == "Fixed" && build.commit().committer().person() != null) {
-        mb.say(`CI build of repo ${repo} is now fixed`).on(build.commit().committer().person().chatIdentity().chatId()).send()
+        mb.say(`Travis CI build of repo ${repo} is now fixed`).on(build.commit().committer().person().chatIdentity().chatId()).send()
      }
    }
    else if (build.status() == "Failed" || build.status() == "Broken" || build.status() == "Still Failing") {
      if (build.commit().committer().person() != null) {
         let repo = "`" + build.repo().owner() + "/" + build.repo().name() + "`"
         let commit = "`" + build.commit().sha() + "`"
-        mb.say(`CI build of repo ${repo} failed after your last commit ${commit}: ${build.build_url()}`).on(build.commit().committer().person().chatIdentity().chatId()).send()
+        mb.say(`Travis CI build of repo ${repo} failed after your last commit ${commit}: ${build.build_url()}`).on(build.commit().committer().person().chatIdentity().chatId()).send()
      }
- 
+
      // Attach restart action
      let restart = message.actionRegistry().findByName("RestartBuild")
      restart = message.actionRegistry().bindParameter(restart, "build_id", build.id())
+     restart = message.actionRegistry().bindParameter(restart, "build_no", build.name())
+     restart = message.actionRegistry().bindParameter(restart, "owner", build.repo().owner())
+     restart = message.actionRegistry().bindParameter(restart, "repo", build.repo().name())
      message.withAction(restart)
    }
 
