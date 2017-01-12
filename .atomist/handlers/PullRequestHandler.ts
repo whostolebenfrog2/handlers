@@ -12,3 +12,10 @@ atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='open']", m => {
 
    message.send()
 })
+
+atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='closed']", m => {
+   let pr = m.root() as any
+   let message = atomist.messageBuilder().regarding(pr)
+   message.send()
+})
+

@@ -35,3 +35,14 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
 
    message.send()
 })
+
+atomist.on<TreeNode, TreeNode>("/comment", m => {
+   let issueComment = m.root() as any
+   let message = atomist.messageBuilder().regarding(issueComment)
+
+   let comment = message.actionRegistry().findByName("CommentIssue")
+   comment = message.actionRegistry().bindParameter(comment, "number", issueComment.on.number())
+   message.withAction(comment)
+
+   message.send()
+})
