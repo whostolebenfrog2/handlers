@@ -41,7 +41,7 @@ atomist.on<TreeNode, TreeNode>("/comment", m => {
    let message = atomist.messageBuilder().regarding(issueComment)
 
    let comment = message.actionRegistry().findByName("CommentIssue")
-   comment = message.actionRegistry().bindParameter(comment, "number", issueComment.on.number())
+   comment = message.actionRegistry().bindParameter(comment, "number", issueComment.on().number())
    message.withAction(comment)
 
    message.send()
