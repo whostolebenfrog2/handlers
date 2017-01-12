@@ -1,7 +1,7 @@
 group: atomisthqa
 #group: atomisthq
 artifact: handlers
-version: "0.12.3"
+version: "0.12.4"
 
 requires: "0.10.0-20170109233436"
 
