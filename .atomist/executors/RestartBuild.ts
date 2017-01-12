@@ -33,7 +33,7 @@ var restartBuild: Executor = {
         let status = travisService.restartBuild(p.build_id, p.org, p.token)
         if (status.success()) {
             let repo_slug = "`" + p.owner + "/" + p.repo + "`"
-            _services.messageBuilder().say(`Successfully restarted Travis CI build ${p.build_no} of repo ${repo_slug}`).send()
+            _services.messageBuilder().say(`Successfully restarted Travis CI build #${p.build_no} of repo ${repo_slug}`).send()
             return new Result(Status.Success, "OK")
         }
         else {
