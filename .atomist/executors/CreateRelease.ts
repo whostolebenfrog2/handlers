@@ -33,7 +33,7 @@ var createRelease: Executor = {
 
         let _services: any = services
         let githubService = _services.github() as GitHubService
-        let status = githubService.createRelease(p.tag_name, p.owner, p.repo, p.token)
+        let status = githubService.createRelease(tagName, p.owner, p.repo, p.token)
         _services.messageBuilder().say(status.message()).send()
         if (status.success()) {
             return new Result(Status.Success, "OK")
