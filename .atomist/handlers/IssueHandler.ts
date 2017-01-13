@@ -6,25 +6,20 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
    let issue = m.root() as any
    let message = atomist.messageBuilder().regarding(issue)
 
-   let assign = message.actionRegistry().findByName("AssignIssue|Assign")
+   let assign = message.actionRegistry().findByName("AssignIssue")
    assign = message.actionRegistry().bindParameter(assign, "number", issue.number())
    message.withAction(assign)
 
-   let bug = message.actionRegistry().findByName("LabelIssue|Bug")
+   let bug = message.actionRegistry().findByName("LabelIssue")
    bug = message.actionRegistry().bindParameter(bug, "number", issue.number())
    bug = message.actionRegistry().bindParameter(bug, "label", "bug")
    message.withAction(bug)
 
-   let enhancement = message.actionRegistry().findByName("LabelIssue|Enhancement")
-   enhancement = message.actionRegistry().bindParameter(enhancement, "number", issue.number())
-   enhancement = message.actionRegistry().bindParameter(enhancement, "label", "enhancement")
-   message.withAction(enhancement)
-
-   let close = message.actionRegistry().findByName("CloseIssue|Close")
+   let close = message.actionRegistry().findByName("CloseIssue")
    close = message.actionRegistry().bindParameter(close, "number", issue.number())
    message.withAction(close)
 
-   let comment = message.actionRegistry().findByName("CommentIssue|Comment")
+   let comment = message.actionRegistry().findByName("CommentIssue")
    comment = message.actionRegistry().bindParameter(comment, "number", issue.number())
    message.withAction(comment)
 
@@ -35,7 +30,7 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
    let issue = m.root() as any
    let message = atomist.messageBuilder().regarding(issue)
 
-   let reopen = message.actionRegistry().findByName("ReopenIssue|Reopen")
+   let reopen = message.actionRegistry().findByName("ReopenIssue")
    reopen = message.actionRegistry().bindParameter(reopen, "number", issue.number())
    message.withAction(reopen)
 
@@ -46,7 +41,7 @@ atomist.on<TreeNode, TreeNode>("/comment", m => {
    let issueComment = m.root() as any
    let message = atomist.messageBuilder().regarding(issueComment)
 
-   let comment = message.actionRegistry().findByName("CommentIssue|Comment")
+   let comment = message.actionRegistry().findByName("CommentIssue")
    comment = message.actionRegistry().bindParameter(comment, "number", issueComment.on().number())
    message.withAction(comment)
 
