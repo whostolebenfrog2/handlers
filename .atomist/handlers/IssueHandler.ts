@@ -42,42 +42,13 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
    message.send()
 })
 
-atomist.on<TreeNode, TreeNode>("/comment[.on().state()='open']", m => {
+atomist.on<TreeNode, TreeNode>("/comment", m => {
    let issueComment = m.root() as any
    let message = atomist.messageBuilder().regarding(issueComment)
-
-   let assign = message.actionRegistry().findByName("AssignIssue")
-   assign = message.actionRegistry().bindParameter(assign, "number", issueComment.on().number())
-   message.withAction(assign)
-
-   let bug = message.actionRegistry().findByName("LabelIssue|Bug")
-   bug = message.actionRegistry().bindParameter(bug, "number", issueComment.on().number())
-   bug = message.actionRegistry().bindParameter(bug, "label", "bug")
-   message.withAction(bug)
-
-   let enhancement = message.actionRegistry().findByName("LabelIssue|Enhancement")
-   enhancement = message.actionRegistry().bindParameter(enhancement, "number", issueComment.on().number())
-   enhancement = message.actionRegistry().bindParameter(enhancement, "label", "enhancement")
-   message.withAction(enhancement)
-
-   let close = message.actionRegistry().findByName("CloseIssue|Close")
-   close = message.actionRegistry().bindParameter(close, "number", issueComment.on().number())
-   message.withAction(close)
 
    let comment = message.actionRegistry().findByName("CommentIssue|Comment")
    comment = message.actionRegistry().bindParameter(comment, "number", issueComment.on().number())
    message.withAction(comment)
-
-   message.send()
-})
-
-atomist.on<TreeNode, TreeNode>("/comment[.on().state()='closed']", m => {
-   let issueComment = m.root() as any
-   let message = atomist.messageBuilder().regarding(issueComment)
-
-   let reopen = message.actionRegistry().findByName("ReopenIssue")
-   reopen = message.actionRegistry().bindParameter(reopen, "number", issueComment.on().number())
-   message.withAction(reopen)
 
    message.send()
 })
