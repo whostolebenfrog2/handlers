@@ -17,6 +17,7 @@ interface Parameters {
 var assignIssue: Executor = {
     description: "Assign a GitHub issue",
     name: "AssignIssue",
+    tags: ["atomist/intent=assign issue"],
     parameters: [
         // TODO proper patterns and validation
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true },

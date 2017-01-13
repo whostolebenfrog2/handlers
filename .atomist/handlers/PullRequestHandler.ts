@@ -6,7 +6,7 @@ atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='open']", m => {
    let pr = m.root() as any
    let message = atomist.messageBuilder().regarding(pr)
 
-   let merge = message.actionRegistry().findByName("MergePullRequest")
+   let merge = message.actionRegistry().findByName("MergePullRequest|Merge")
    merge = message.actionRegistry().bindParameter(merge, "number", pr.number())
    message.withAction(merge)
 
