@@ -5,6 +5,7 @@ import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 import { GitHubService, Issue } from "@atomist/github/core/Core"
 
 interface Parameters {
+    search: string
     owner: string
     repo: string
     token: string
@@ -15,6 +16,7 @@ var listRepositoryIssues: Executor = {
     name: "ListRepositoryIssues",
     tags: ["atomist/intent=open issues"],
     parameters: [
+        { name: "search", description: "Search text", pattern: "^.*$", maxLength: 100, required: false, displayable: true},
         // TODO proper patterns and validation
         { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
         { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
@@ -25,10 +27,10 @@ var listRepositoryIssues: Executor = {
 
         let _services: any = services
         let githubService = _services.github() as GitHubService
-        let issues: Issue[] = githubService.listIssues(p.owner, p.repo, p.token)
+        let issues: Issue[] = githubService.listIssues(p.search, p.owner, p.repo, p.token)
 
         if (issues.length > 0) {
-            let attachments = `{"attachments": [` + issues.map(i => {
+            let attachments = `{"text":"The search returned *${issues.length}* matching issue(s):", "attachments": [` + issues.map(i => {
                 return `{
                 "fallback": "#${i.number()}: ${i.title()}",
                 "author_icon": "http://images.atomist.com/rug/issue-open.png",
