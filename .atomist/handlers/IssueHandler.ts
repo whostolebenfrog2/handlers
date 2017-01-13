@@ -10,12 +10,12 @@ atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
    assign = message.actionRegistry().bindParameter(assign, "number", issue.number())
    message.withAction(assign)
 
-   let bug = message.actionRegistry().findByName("LabelIssue|Add Label: Bug")
+   let bug = message.actionRegistry().findByName("LabelIssue|Label as Bug")
    bug = message.actionRegistry().bindParameter(bug, "number", issue.number())
    bug = message.actionRegistry().bindParameter(bug, "label", "bug")
    message.withAction(bug)
 
-   let enhancement = message.actionRegistry().findByName("LabelIssue|Add Label: Enhancement")
+   let enhancement = message.actionRegistry().findByName("LabelIssue|Label as Enhancement")
    enhancement = message.actionRegistry().bindParameter(enhancement, "number", issue.number())
    enhancement = message.actionRegistry().bindParameter(enhancement, "label", "enhancement")
    message.withAction(enhancement)
