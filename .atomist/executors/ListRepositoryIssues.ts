@@ -16,7 +16,7 @@ var listRepositoryIssues: Executor = {
     name: "ListRepositoryIssues",
     tags: ["atomist/intent=open issues"],
     parameters: [
-        { name: "search", description: "Search text", pattern: "^.*$", maxLength: 100, required: false, displayable: true},
+        { name: "search", description: "Search Text", pattern: "^.*$", maxLength: 100, required: false, displayable: true},
         // TODO proper patterns and validation
         { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
         { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
