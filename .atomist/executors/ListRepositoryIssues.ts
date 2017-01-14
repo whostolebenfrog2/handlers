@@ -37,7 +37,7 @@ var listRepositoryIssues: Executor = {
                 "author_icon": "http://images.atomist.com/rug/issue-open.png",
                 "color": "#6cc644",
                 "author_link": "${i.issueUrl()}",
-                "author_name": ${text}"
+                "author_name": ${text}
              }`
             }).join(",") + "]}"
             _services.messageBuilder().say(attachments).send()
