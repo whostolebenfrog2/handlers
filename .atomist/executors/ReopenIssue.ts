@@ -12,7 +12,7 @@ interface Parameters {
 }
 
 var reopenIssue: Executor = {
-    description: "Close a GitHub issue",
+    description: "Reopen a GitHub issue",
     name: "ReopenIssue",
     tags: ["atomist/intent=reopen issue"],
     parameters: [
