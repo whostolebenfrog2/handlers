@@ -31,12 +31,13 @@ var listRepositoryIssues: Executor = {
 
         if (issues.length > 0) {
             let attachments = `{"text":"The search returned *${issues.length}* matching issue(s):", "attachments": [` + issues.map(i => {
+                let text = JSON.stringify(`#${i.number()}: ${i.title()}`)
                 return `{
-                "fallback": "#${i.number()}: ${i.title()}",
+                "fallback": ${text},
                 "author_icon": "http://images.atomist.com/rug/issue-open.png",
                 "color": "#6cc644",
                 "author_link": "${i.issueUrl()}",
-                "author_name": "#${i.number()}: ${i.title()}"
+                "author_name": ${text}"
              }`
             }).join(",") + "]}"
             _services.messageBuilder().say(attachments).send()
