@@ -3,7 +3,7 @@ group: atomisthqa
 artifact: handlers
 version: "0.17.1"
 
-requires: "0.10.0-20170109233436"
+#requires: "0.10.0-20170109233436"
 
 dependencies:
 
