@@ -4,7 +4,7 @@ import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
 import { GitHubService } from "@atomist/github/core/Core"
 
-//import {UserToken} from './Parameters'
+import { Owner, Repository, RepoUserToken } from './Parameters'
 
 interface Parameters {
     number: number
@@ -22,17 +22,9 @@ var assignIssue: Executor = {
         // TODO proper patterns and validation
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true },
         { name: "assignee", description: "Assignee", pattern: "^.*$", maxLength: 100, required: true },
-        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
-        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
-        // TODO marking it required: false will prevent the bot to ask for it
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/github/user_token"] }
+        Owner, Repository, RepoUserToken
     ],
     execute(services: Services, p: Parameters): Result {
-        /*
-          let issue: Issue = pxe.match(`/Issue[.number() = ${p.number}]`).scalar()
-          issue.assign(p.assignee)
-          return issue.plan()
-        */
 
         let _services: any = services
         let githubService = _services.github() as GitHubService

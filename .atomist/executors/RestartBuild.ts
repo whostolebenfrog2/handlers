@@ -4,6 +4,8 @@ import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
 import { TravisService } from "@atomist/travis/core/Core"
 
+import { RepoUserToken, Owner, Repository } from './Parameters'
+
 interface Parameters {
     build_id: number
     org: string
@@ -22,10 +24,7 @@ var restartBuild: Executor = {
         { name: "build_id", description: "Build Number", pattern: "^.*$", maxLength: 100, required: true },
         { name: "build_no", description: "Build No", pattern: "^.*$", maxLength: 100, required: false },
         { name: "org", description: "Travis org", pattern: "^(.org|.com)$", maxLength: 100, required: false, default:".org" },
-        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
-        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
-        // TODO marking it required: false will prevent the bot to ask for it
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/github/user_token"] }
+        Owner, Repository, RepoUserToken
     ],
     execute(services: Services, p: Parameters): Result {
         console.log(p)

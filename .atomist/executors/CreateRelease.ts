@@ -4,6 +4,8 @@ import { Result, Status, Parameter } from "@atomist/rug/operations/RugOperation"
 
 import { GitHubService } from "@atomist/github/core/Core"
 
+import { RepoUserToken, Owner, Repository } from './Parameters'
+
 interface Parameters {
     tag_name: string
     owner: string
@@ -18,10 +20,7 @@ var createRelease: Executor = {
     parameters: [
         // TODO proper patterns and validation
         { name: "tag_name", description: "GitHub Tag", pattern: "^.*$", maxLength: 100, required: false, default: "" },
-        { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] },
-        { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] },
-        // TODO marking it required: false will prevent the bot to ask for it
-        { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/github/user_token"] }
+        Owner, Repository, RepoUserToken
     ],
     execute(services: Services, p: Parameters): Result {
 

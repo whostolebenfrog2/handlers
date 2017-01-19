@@ -1,5 +1,31 @@
 import { Parameter } from '@atomist/rug/operations/RugOperation'
 
-export var UserToken: { name: "token", description: "GitHub Token", pattern: "^.*$", maxLength: 100, required: false, displayable: false, tags: ["atomist/github/user_token"] }
-export var Owner: { name: "owner", description: "GitHub Owner", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/owner"] }
-export var Repo: { name: "repo", description: "GitHub Repo", pattern: "^.*$", maxLength: 100, required: true, displayable: false, tags: ["atomist/repository"] }
+export var Owner: Parameter = {
+  name: "owner",
+  description: "GitHub Owner",
+  pattern: "^.*$",
+  maxLength: 100,
+  required: true,
+  displayable: false,
+  tags: ["atomist/owner"]
+}
+
+export var Repository: Parameter = {
+  name: "repo",
+  description: "GitHub Repository",
+  pattern: "^.*$",
+  maxLength: 100,
+  required: true,
+  displayable: false,
+  tags: ["atomist/repository"]
+}
+
+export var RepoUserToken: Parameter = {
+  name: "token",
+  description: "GitHub Token",
+  pattern: "^.*$",
+  maxLength: 100,
+  required: false,
+  displayable: false,
+  tags: ["atomist/user_token"]
+}
