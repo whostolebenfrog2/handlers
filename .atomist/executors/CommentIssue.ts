@@ -17,7 +17,7 @@ interface Parameters {
 var commentIssue: Executor = {
     description: "Close a GitHub issue",
     name: "CommentIssue",
-    tags: ["atomist/intent=add comment", "atomist/intent=create comment"],
+    tags: ["atomist/intent=add comment", "atomist/intent=create comment", "atomist/private=false"],
     parameters: [
         // TODO proper patterns and validation
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true },
