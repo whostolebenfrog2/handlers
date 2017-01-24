@@ -7,7 +7,7 @@ import { GitHubService } from "@atomist/github/core/Core"
 import { RepoUserToken, Owner, Repository } from './Parameters'
 
 interface Parameters {
-    number1: number
+    number: number
     owner: string
     repo: string
     token: string
@@ -22,7 +22,7 @@ var closeIssue: Executor = {
         { name: "number", description: "Issue Number", pattern: "^.*$", maxLength: 100, required: true },
         Owner, Repository, RepoUserToken
     ],
-    execute(services: Services, {token} : {token: string}): Result {
+    execute(services: Services, p: Parameters): Result {
 
         let _services: any = services
         let githubService = _services.github() as GitHubService
