@@ -5,12 +5,13 @@ declare var atomist: Atomist
 atomist.on<TreeNode, TreeNode>("/comment", m => {
    let comment = m.root() as any
    let mb = atomist.messageBuilder()
-   sendDirectMessage(
+   if (comment.on() != comment.by()) {
+   sendDirectMessage(comment.on().by().person(),
      comment, `${comment.by().login()} commented on https://github.com/${comment.on().repo().owner()}/${comment.on().repo().name()}/issues/${comment.on().number()} ${comment.on().title()}\n> ${comment.body()}`, mb)
+   }
 })
 
-function sendDirectMessage(comment: any, message: string, mb: MessageBuilder) {
-  let who = comment.on().by().person()
+function sendDirectMessage(who: any, comment: any, message: string, mb: MessageBuilder) {
   if (who != null) {
       mb.say(message).on(who.chatIdentity().chatId()).send()
   }
