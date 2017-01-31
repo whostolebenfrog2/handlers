@@ -6,7 +6,7 @@ atomist.on<TreeNode, TreeNode>("/comment", m => {
    let comment = m.root() as any
    let mb = atomist.messageBuilder()
    sendDirectMessage(
-     comment, `${comment.by().login()} commented on #${comment.on().number()}:${comment.on().title()}\n> ${comment.body()}`, mb)
+     comment, `${comment.by().login()} commented on https://github.com/${comment.on().repo().owner()}/${comment.on().repo().name()}/issues/${comment.on().number()} ${comment.on().title()}\n> ${comment.body()}`, mb)
 })
 
 function sendDirectMessage(comment: any, message: string, mb: MessageBuilder) {
