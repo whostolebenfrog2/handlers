@@ -15,7 +15,7 @@ interface Parameters {
     token: string
 }
 
-var restartBuild: Executor = {
+export let restartBuild: Executor = {
     description: "Restart a build on Travis CI",
     name: "RestartBuild",
     tags: ["atomist/intent=restart build", "atomist/private=false"],
@@ -23,7 +23,7 @@ var restartBuild: Executor = {
         // TODO proper patterns and validation
         { name: "build_id", description: "Build Number", pattern: "^.*$", maxLength: 100, required: true },
         { name: "build_no", description: "Build No", pattern: "^.*$", maxLength: 100, required: false },
-        { name: "org", description: "Travis org", pattern: "^(.org|.com)$", maxLength: 100, required: false, default:".org" },
+        { name: "org", description: "Travis org", pattern: "^(.org|.com)$", maxLength: 100, required: false, default: ".org" },
         Owner, Repository, RepoUserToken
     ],
     execute(services: Services, p: Parameters): Result {

@@ -13,12 +13,12 @@ interface Parameters {
     token: string
 }
 
-var listRepositoryIssues: Executor = {
+export let listRepositoryIssues: Executor = {
     description: "List repository GitHub issues",
     name: "ListRepositoryIssues",
     tags: ["atomist/intent=open issues", "atomist/private=false"],
     parameters: [
-        { name: "search", description: "Search Text", pattern: "^.*$", maxLength: 100, required: false, displayable: true},
+        { name: "search", description: "Search Text", pattern: "^.*$", maxLength: 100, required: false, displayable: true },
         Owner, Repository, RepoUserToken
     ],
     execute(services: Services, p: Parameters): Result {
