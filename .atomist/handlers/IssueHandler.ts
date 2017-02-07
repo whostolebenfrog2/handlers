@@ -39,14 +39,14 @@ function bindIssueActions(message: Message, number: number, owner: string, repo:
   assign = registry.bindParameter(assign, "owner", owner)
   message.withAction(assign)
 
-  let bug = registry.findByName("LabelIssue|Label as Bug")
+  let bug = registry.findByName("LabelIssue|Bug")
   bug = registry.bindParameter(bug, "number", number)
   bug = registry.bindParameter(bug, "label", "bug")
   bug = registry.bindParameter(bug, "repo", repo)
   bug = registry.bindParameter(bug, "owner", owner)
   message.withAction(bug)
 
-  let enhancement = registry.findByName("LabelIssue|Label as Enhancement")
+  let enhancement = registry.findByName("LabelIssue|Enhancement")
   enhancement = registry.bindParameter(enhancement, "number", number)
   enhancement = registry.bindParameter(enhancement, "label", "enhancement")
   enhancement = registry.bindParameter(enhancement, "repo", repo)
