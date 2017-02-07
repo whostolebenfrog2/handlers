@@ -1,13 +1,9 @@
 group: atomisthqa
 #group: atomisthq
 artifact: handlers
-version: "0.23.2"
-
+version: "0.25.0"
 requires: "0.11.0"
-
 dependencies:
-
 extensions:
-  - "com.atomist:github-commands:0.4.1"
-  - "com.atomist:model:0.3.1-20170118140540"
+  - "com.atomist:github-commands:0.5.0"
   - "com.atomist:travis-rug-type:0.7.0"
