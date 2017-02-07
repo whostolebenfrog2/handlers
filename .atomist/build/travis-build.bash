@@ -124,8 +124,13 @@ function main () {
             return 1
         fi
 
-        msg "publishing archive"
-        if ! $rug publish -a "$project_version"; then
+        msg "publishing archive for atomisthqa"
+        if ! $rug publish --archive-version "$project_version" --archive-group "atomisthqa"; then
+            err "failed to publish archive $project_version"
+            return 1
+        fi
+        msg "publishing archive for atomisthq"
+        if ! $rug publish --archive-version "$project_version" --archive-group "atomisthq"; then
             err "failed to publish archive $project_version"
             return 1
         fi
