@@ -2,13 +2,13 @@ import {Atomist, MessageBuilder} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/comment", m => {
+atomist.on<TreeNode, TreeNode>("/Comment[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Issue()[/belongsTo::Repo()/channel::ChatChannel()][/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
    let comment = m.root() as any
    let mb = atomist.messageBuilder()
-   if (comment.on() != comment.by()) {
-   sendDirectMessage(comment.on().by().person(),
-     comment, `${comment.by().login()} commented on https://github.com/${comment.on().repo().owner()}/${comment.on().repo().name()}/issues/${comment.on().number()} ${comment.on().title()}\n> ${comment.body()}`, mb)
-   }
+   //if (comment.on() != comment.by()) {
+   //sendDirectMessage(comment.on().by().person(),
+   //  comment, `${comment.by().login()} commented on https://github.com/${comment.on().repo().owner()}/${comment.on().repo().name()}/issues/${comment.on().number()} ${comment.on().title()}\n> ${comment.body()}`, mb)
+   //}
 })
 
 function sendDirectMessage(who: any, comment: any, message: string, mb: MessageBuilder) {
