@@ -24,7 +24,7 @@ atomist.on<TreeNode, TreeNode>("/Issue()[.state()='closed'][/resolvedBy::Commit(
    
    let cid = "issue/" + issue.belongsTo().owner() + "/" + issue.belongsTo().name() + "/" + issue.number()
 
-   message.send().withCorrelationId(cid)
+   message.withCorrelationId(cid).send()
 })
 
 atomist.on<TreeNode, TreeNode>("/Comment()[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Issue()[/belongsTo::Repo()/channel::ChatChannel()][/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
