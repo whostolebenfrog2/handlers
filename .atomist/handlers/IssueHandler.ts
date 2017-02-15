@@ -2,32 +2,38 @@ import {Atomist, Message} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/issue[.state()='open']", m => {
+atomist.on<TreeNode, TreeNode>("/Issue()[.state()='open'][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
    let issue = m.root() as any
    let message = atomist.messageBuilder().regarding(issue)
 
-   bindIssueActions(message, issue.number(), issue.repo().owner(), issue.repo().name()).send()
+   let cid = "issue/" + issue.belongsTo().owner() + "/" + issue.belongsTo().name() + "/" + issue.number()
+   
+   bindIssueActions(message, issue.number(), issue.belongsTo().owner(), issue.belongsTo().name()).withCorrelationId(cid).send()
 })
 
-atomist.on<TreeNode, TreeNode>("/issue[.state()='closed']", m => {
+atomist.on<TreeNode, TreeNode>("/Issue()[.state()='closed'][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
    let issue = m.root() as any
    let message = atomist.messageBuilder().regarding(issue)
    let registry = message.actionRegistry()
 
    let reopen = registry.findByName("ReopenIssue|Reopen")
    reopen = registry.bindParameter(reopen, "number", issue.number())
-   reopen = registry.bindParameter(reopen, "repo", issue.repo().name())
-   reopen = registry.bindParameter(reopen, "owner", issue.repo().owner())
+   reopen = registry.bindParameter(reopen, "repo", issue.belongsTo().name())
+   reopen = registry.bindParameter(reopen, "owner", issue.belongsTo().owner())
    message.withAction(reopen)
+   
+   let cid = "issue/" + issue.belongsTo().owner() + "/" + issue.belongsTo().name() + "/" + issue.number()
 
-   message.send()
+   message.send().withCorrelationId(cid)
 })
 
-atomist.on<TreeNode, TreeNode>("/comment", m => {
+atomist.on<TreeNode, TreeNode>("/Comment()[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Issue()[/belongsTo::Repo()/channel::ChatChannel()][/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
    let issueComment = m.root() as any
    let message = atomist.messageBuilder().regarding(issueComment)
 
-   bindIssueActions(message, issueComment.on().number(), issueComment.repo().owner(), issueComment.repo().name()).send()
+   let cid = "comment/" + comment.on().belongsTo().owner() + "/" + comment.on().belongsTo().name() + "/" + comment.on().number() + "/" + comment.id()
+
+   bindIssueActions(message, issueComment.on().number(), issueComment.on().belongsTo().owner(), issueComment.on().belongsTo().name()).withCorrelationId(cid).send()
 })
 
 function bindIssueActions(message: Message, number: number, owner: string, repo: string): Message {
