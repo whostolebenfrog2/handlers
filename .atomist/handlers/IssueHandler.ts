@@ -28,12 +28,12 @@ atomist.on<TreeNode, TreeNode>("/Issue()[.state()='closed'][/resolvedBy::Commit(
 })
 
 atomist.on<TreeNode, TreeNode>("/Comment()[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Issue()[/belongsTo::Repo()/channel::ChatChannel()][/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
-   let issueComment = m.root() as any
-   let message = atomist.messageBuilder().regarding(issueComment)
+   let comment = m.root() as any
+   let message = atomist.messageBuilder().regarding(comment)
 
    let cid = "comment/" + comment.on().belongsTo().owner() + "/" + comment.on().belongsTo().name() + "/" + comment.on().number() + "/" + comment.id()
 
-   bindIssueActions(message, issueComment.on().number(), issueComment.on().belongsTo().owner(), issueComment.on().belongsTo().name()).withCorrelationId(cid).send()
+   bindIssueActions(message, comment.on().number(), comment.on().belongsTo().owner(), comment.on().belongsTo().name()).withCorrelationId(cid).send()
 })
 
 function bindIssueActions(message: Message, number: number, owner: string, repo: string): Message {
