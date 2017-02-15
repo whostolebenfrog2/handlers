@@ -28,8 +28,9 @@ atomist.on<TreeNode, TreeNode>("/Build[/hasBuild::Commit()/author::GitHubId()[/h
      restart = message.actionRegistry().bindParameter(restart, "repo", build.on().name())
      message.withAction(restart)
    }
-
-   message.send()
+   
+   let cid = "commit_event/" + build.on().owner() + "/" + build.on().name() + "/" + build.hasBuild().sha()
+   message.withCorrelationId(cid).send()
 })
 
 function sendDirectMessage(build: any, message: string, mb: MessageBuilder) {
