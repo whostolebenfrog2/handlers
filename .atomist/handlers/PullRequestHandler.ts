@@ -2,19 +2,24 @@ import {Atomist} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='open']", m => {
+atomist.on<TreeNode, TreeNode>("/PullRequest[.state()='open'][/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/mergedBy::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Repo()/channel::ChatChannel()][/head::Commit()/contains::Push()[/triggeredBy::Build()][/on::Repo()][/contains::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]]", m => {
    let pr = m.root() as any
    let message = atomist.messageBuilder().regarding(pr)
 
    let merge = message.actionRegistry().findByName("MergePullRequest|Merge")
    merge = message.actionRegistry().bindParameter(merge, "number", pr.number())
    message.withAction(merge)
+   
+   let cid = "commit_event/" + pr.on().owner() + "/" + pr.on().name() + "/" + pr.head().sha()
 
-   message.send()
+   message.withCorrelationId(cid).send()
 })
 
-atomist.on<TreeNode, TreeNode>("/pullRequest[.state()='closed']", m => {
+atomist.on<TreeNode, TreeNode>("/PullRequest[.state()='closed'][/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/mergedBy::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Repo()/channel::ChatChannel()][/head::Commit()/contains::Push()[/triggeredBy::Build()][/on::Repo()][/contains::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]]", m => {
    let pr = m.root() as any
    let message = atomist.messageBuilder().regarding(pr)
-   message.send()
+   
+   let cid = "commit_event/" + pr.on().owner() + "/" + pr.on().name() + "/" + pr.head().sha()
+
+   message.withCorrelationId(cid).send()
 })
