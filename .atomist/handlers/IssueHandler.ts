@@ -6,7 +6,7 @@ atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId(
    let issue = m.root() as any
 
    // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
-   if (pr.state() != "open") {
+   if (issue.state() != "open") {
      return
    }
 
@@ -21,7 +21,7 @@ atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId(
    let issue = m.root() as any
 
    // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
-   if (pr.state() != "closed") {
+   if (issue.state() != "closed") {
      return
    }
 
