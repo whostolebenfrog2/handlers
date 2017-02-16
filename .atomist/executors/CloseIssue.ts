@@ -27,11 +27,11 @@ export let closeIssue: Executor = {
         let _services: any = services
         let githubService = _services.github() as GitHubService
         let status = githubService.closeIssue(p.number, p.owner, p.repo, p.token)
-        _services.messageBuilder().say(status.message()).send()
         if (status.success()) {
             return new Result(Status.Success, "OK")
         }
         else {
+            _services.messageBuilder().say(status.message()).send()
             return new Result(Status.Error, status.message())
         }
     }
