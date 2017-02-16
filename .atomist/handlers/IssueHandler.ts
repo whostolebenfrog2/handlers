@@ -2,8 +2,14 @@ import {Atomist, Message} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/Issue()[.state()='open'][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
+atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
    let issue = m.root() as any
+
+   // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
+   if (pr.state() != "open") {
+     return
+   }
+
    let message = atomist.messageBuilder().regarding(issue)
 
    let cid = "issue/" + issue.belongsTo().owner() + "/" + issue.belongsTo().name() + "/" + issue.number()
@@ -11,8 +17,14 @@ atomist.on<TreeNode, TreeNode>("/Issue()[.state()='open'][/resolvedBy::Commit()/
    bindIssueActions(message, issue.number(), issue.belongsTo().owner(), issue.belongsTo().name()).withCorrelationId(cid).send()
 })
 
-atomist.on<TreeNode, TreeNode>("/Issue()[.state()='closed'][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
+atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
    let issue = m.root() as any
+
+   // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
+   if (pr.state() != "closed") {
+     return
+   }
+
    let message = atomist.messageBuilder().regarding(issue)
    let registry = message.actionRegistry()
 
