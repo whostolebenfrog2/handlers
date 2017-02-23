@@ -7,7 +7,7 @@ atomist.on<TreeNode, TreeNode>(
         [/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
         [/mergedBy::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?
         [/contains::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
-        [/triggeredBy::Build()/on::Repo()]
+        [/triggeredBy::Build()/on::Repo()]?
         [/on::Repo()/channel::ChatChannel()]`, m => {
 
    let pr = m.root() as any
@@ -33,7 +33,7 @@ atomist.on<TreeNode, TreeNode>(
         [/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
         [/mergedBy::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?
         [/contains::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
-        [/triggeredBy::Build()/on::Repo()]
+        [/triggeredBy::Build()/on::Repo()]?
         [/on::Repo()/channel::ChatChannel()]`, m => {
 
    let pr = m.root() as any
