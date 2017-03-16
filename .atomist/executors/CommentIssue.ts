@@ -15,7 +15,7 @@ interface Parameters {
 }
 
 export let commentIssue: Executor = {
-    description: "Close a GitHub issue",
+    description: "Comment on a GitHub issue",
     name: "CommentIssue",
     tags: ["atomist/intent=add comment", "atomist/intent=create comment", "atomist/private=false"],
     parameters: [
