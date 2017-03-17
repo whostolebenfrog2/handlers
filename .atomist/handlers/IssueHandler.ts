@@ -2,7 +2,12 @@ import {Atomist, Message} from '@atomist/rug/operations/Handler'
 import {TreeNode} from '@atomist/rug/tree/PathExpression'
 declare var atomist: Atomist
 
-atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
+atomist.on<TreeNode, TreeNode>(`/Issue()
+                                  [/labelled::Label()]?
+                                  [/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?
+                                  [/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
+                                  [/belongsTo::Repo()/channel::ChatChannel()]`, m => {
+
    let issue = m.root() as any
 
    // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
@@ -17,7 +22,11 @@ atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId(
    bindIssueActions(message, issue.number(), issue.belongsTo().owner(), issue.belongsTo().name()).withCorrelationId(cid).send()
 })
 
-atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/belongsTo::Repo()/channel::ChatChannel()]", m => {
+atomist.on<TreeNode, TreeNode>(`/Issue()
+                                  [/labelled::Label()]?
+                                  [/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?
+                                  [/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
+                                  [/belongsTo::Repo()/channel::ChatChannel()]`, m => {
    let issue = m.root() as any
 
    // temp workaound to issue in path expressions looking up values on JsonBackedTreeNodes
@@ -39,7 +48,14 @@ atomist.on<TreeNode, TreeNode>("/Issue()[/resolvedBy::Commit()/author::GitHubId(
    message.withCorrelationId(cid).send()
 })
 
-atomist.on<TreeNode, TreeNode>("/Comment()[/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Issue()[/belongsTo::Repo()/channel::ChatChannel()][/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
+atomist.on<TreeNode, TreeNode>("/Comment()
+                                  [/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
+                                  [/on::Issue()
+                                    [/labelled::Label()]?
+                                    [/belongsTo::Repo()/channel::ChatChannel()]
+                                    [/by::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]
+                                    [/resolvedBy::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?]?]", m => {
+
    let comment = m.root() as any
    let message = atomist.messageBuilder().regarding(comment)
 
