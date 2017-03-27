@@ -18,6 +18,7 @@ function err() {
 function main () {
     [[ $TRAVIS_PULL_REQUEST == false ]] || return 0
     if [[ $TRAVIS_BRANCH == master || $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+
         if ! git config --global user.email "travis-ci@atomist.com"; then
             err "failed to set git user email"
             return 1
@@ -26,7 +27,7 @@ function main () {
             err "failed to set git user name"
             return 1
         fi
-        local git_tag=$(uuidgen)
+        local git_tag="0.1.$TRAVIS_BUILD_NUMBER"
         if ! git tag "$git_tag" -m "Generated tag from TravisCI build $TRAVIS_BUILD_NUMBER"; then
             err "failed to create git tag: $git_tag"
             return 1
