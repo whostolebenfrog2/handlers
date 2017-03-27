@@ -5,7 +5,7 @@ jdk:
 - oraclejdk8
 branches:
   except:
-  - "/\\+travis\\d+$/"
+  - "/.*travis\\d+$/"
 env:
   global:
   - MAVEN_BASE_URL=https://atomist.jfrog.io/atomist
