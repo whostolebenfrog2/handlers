@@ -4,7 +4,7 @@ declare var atomist: Atomist
 
 // Handles Push builds
 atomist.on<TreeNode, TreeNode>("/Build[/hasBuild::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Repo()/channel::ChatChannel()][/triggeredBy::Push()[/contains::Commit()/author::GitHubId()[/hasGithubIdentity::Person()/hasChatIdentity::ChatId()]?][/on::Repo()]]", m => {
-   let build = m.root() as any
+   lets build = m.root() as any
    let mb = atomist.messageBuilder()
    let message = mb.regarding(build)
    let repo = "`" + build.on().owner() + "/" + build.on().name() + "`"
