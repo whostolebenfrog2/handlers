@@ -8,7 +8,7 @@ import { Tag } from '@atomist/cortex/Tag'
  * A Simple command to tag a sha in GitHub.
  */
 @CommandHandler("Tag", "Simple command to tag a sha in GitHub")
-@Tags("documentation")
+@Tags("handlers", "demo")
 @Intent("create tag")
 export class HandleTag implements HandleCommand {
 
