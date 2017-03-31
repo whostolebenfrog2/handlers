@@ -4,7 +4,7 @@ Given("nothing", f => { });
 
 When("the Tag is invoked", (world: HandlerScenarioWorld) => {
     let w: CommandHandlerScenarioWorld = world as CommandHandlerScenarioWorld;
-    let handler = w.commandHandler("Tag");
+    let handler = w.commandHandler("CreateTag");
     w.invokeHandler(handler, {});
 });
 

@@ -6,9 +6,9 @@ import { Tag } from "@atomist/cortex/Tag";
 /**
  * A Simple handler to catch any Tag event.
  */
-@EventHandler("Tag", "Simple handler to catch any Tag event", "/Tag()")
+@EventHandler("HandleTag", "Simple handler to catch any Tag event", "/Tag()")
 @Tags("handlers", "demo")
-export class CreateTag implements HandleEvent<Tag, GraphNode> {
+export class HandleTag implements HandleEvent<Tag, GraphNode> {
     handle(event: Match<Tag, GraphNode>): Plan {
         let root: Tag = event.root();
         let plan: Plan = new Plan();
@@ -18,4 +18,4 @@ export class CreateTag implements HandleEvent<Tag, GraphNode> {
     }
 }
 
-export const tag = new CreateTag();
+export const tag = new HandleTag();

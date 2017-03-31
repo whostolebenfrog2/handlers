@@ -3,7 +3,7 @@ import { Tag } from "@atomist/cortex/stub/Tag";
 
 Given("the Tag is registered", (world: HandlerScenarioWorld) => {
     let w: EventHandlerScenarioWorld = world as EventHandlerScenarioWorld;
-    w.registerHandler("Tag");
+    w.registerHandler("HandleTag");
 });
 
 const tagName = "1.2.3";
