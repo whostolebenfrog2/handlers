@@ -15,7 +15,7 @@ When("a new Tag is received", (world: HandlerScenarioWorld) => {
 });
 
 Then("the event handler should respond with the correct message", (world: HandlerScenarioWorld) => {
-    const expected = `Last build created a new Tag \`1.2.3\``;
+    const expected = `New Tag \`1.2.3\` detected`;
     const message = world.plan().messages[0].body;
     return message == expected;
 });
