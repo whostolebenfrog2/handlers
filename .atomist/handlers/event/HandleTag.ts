@@ -13,7 +13,7 @@ export class CreateTag implements HandleEvent<Tag, GraphNode> {
         let root: Tag = event.root();
         let plan: Plan = new Plan();
         let message = new Message(`New Tag \`${root.name()}\` detected`);
-        message.channelId = "handlers";
+        message.channelId = "general";
         return plan.add(message);
     }
 }
