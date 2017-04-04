@@ -16,11 +16,12 @@ import * as mustache from "mustache";
 @Tags("ci")
 export class BuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
-        let root = event.root();
+        let root: Build = event.root();
         let plan: Plan = new Plan();
 
         let message;
-        message = new Message(`new build? ${root.status()}`);
+        message = new Message(`new build? ${root.id()}:${root.name()}:${root.status()}`);
+        console.log(`BuildStatusHandler: ${message.body()}`);
         plan.add(message);
         let execute: Respondable<Execute> = {
             instruction: {
@@ -45,11 +46,12 @@ export const buildStatusHandler = new BuildStatusHandler();
 @Tags("ci")
 export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
-        let root = event.root();
+        let root: Build = event.root();
         let plan: Plan = new Plan();
 
         let message;
-        message = new Message(`new build? ${root.status()}`);
+        message = new Message(`new build? ${root.id()}:${root.name()}:${root.status()}`);
+        console.log(`AllBuildStatusHandler: ${message.body()}`);
         const channelId = "C4UC96BK5";
         message.withChannelId(channelId);
         plan.add(message);
@@ -87,12 +89,11 @@ class SendWinsResponder implements HandleResponse<any> {
     })
     channelId: string;
 
-
     handle(response: Response<any>): Plan {
         let plan: Plan = new Plan();
 
+        console.log(`SendWinsReponsder: this=${JSON.stringify(this)}`);
         let bodyText = response.body();
-        console.log(bodyText);
         let images = bodyText.split('\n');
         let image = images[Math.round(Math.random() * (images.length))];
         let body =
@@ -105,8 +106,10 @@ class SendWinsResponder implements HandleResponse<any> {
     "ts": "{{{timestamp}}}"
   }]
 }`, { image: image, timestamp: new Date() });
+        console.log(`SendWinsResponder: body=${body}`);
         let message = new Message(body);
         if (this.channelId) {
+            console.log(`SendWinsResponder: channelId=${this.channelId}`);
             message.withChannelId(this.channelId);
         }
         plan.add(message);
