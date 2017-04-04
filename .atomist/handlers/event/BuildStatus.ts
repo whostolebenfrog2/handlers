@@ -21,7 +21,7 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
 
         let message;
         message = new Message(`new build? ${root.id()}:${root.name()}:${root.status()}`);
-        console.log(`BuildStatusHandler: ${message.body()}`);
+        console.log(`BuildStatusHandler: ${message.body}`);
         plan.add(message);
         let execute: Respondable<Execute> = {
             instruction: {
@@ -49,9 +49,8 @@ export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
         let root: Build = event.root();
         let plan: Plan = new Plan();
 
-        let message;
-        message = new Message(`new build? ${root.id()}:${root.name()}:${root.status()}`);
-        console.log(`AllBuildStatusHandler: ${message.body()}`);
+        let message = new Message(`new build? ${root.id()}:${root.name()}:${root.status()}`);
+        console.log(`AllBuildStatusHandler: ${message.body}`);
         const channelId = "C4UC96BK5";
         message.withChannelId(channelId);
         plan.add(message);
