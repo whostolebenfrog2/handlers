@@ -150,7 +150,7 @@ export class SendWinsResponder implements HandleResponse<any> {
 
 export const sendWinsImage = new SendWinsResponder();
 
-@ResponseHandler("GetErrorMessage", "Sends a wins image")
+@ResponseHandler("GetErrorMessage", "Sends an error message")
 export class GetErrorMessage implements HandleResponse<any> {
 
     @Parameter({
@@ -164,7 +164,7 @@ export class GetErrorMessage implements HandleResponse<any> {
     handle(response: Response<any>): Plan {
         let plan: Plan = new Plan();
 
-        console.log(`GetErrorMessage: in here`);
+        console.log(`GetErrorMessage: channelId=${this.channelId}`);
         return Plan.ofMessage(new Message("failed to fetch success image URLs").withChannelId(this.channelId));
     }
 }
