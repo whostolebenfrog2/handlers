@@ -10,7 +10,6 @@ import {
 import { Match } from "@atomist/rug/tree/PathExpression";
 import { ResponseHandler, EventHandler, Tags, Parameter } from "@atomist/rug/operations/Decorators";
 import { Build } from "@atomist/cortex/stub/Build";
-import * as mustache from "mustache";
 
 @EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()/on::Repo()/channel::ChatChannel()")
 @Tags("ci")
@@ -129,16 +128,14 @@ export class SendWinsResponder implements HandleResponse<any> {
         let bodyText = response.body();
         let images = bodyText.split('\n');
         let image = images[Math.round(Math.random() * (images.length))];
-        let body =
-            mustache.render(`{
+        let body = `{
   "attachments": [{
     "fallback": "Yipee!!!",
     "color": "#36a64f",
-    "title": "Success!",
-    "image_url": "{{{image}}}",
-    "ts": "{{{timestamp}}}"
+    "title": "${this.buildName} Success!",
+    "image_url": "${image}"
   }]
-}`, { image: image, timestamp: new Date() });
+}`;
         console.log(`SendWinsResponder: body=${body}`);
         let message = new Message(body);
         console.log(`SendWinsResponder: channelId=${this.channelId}`);
