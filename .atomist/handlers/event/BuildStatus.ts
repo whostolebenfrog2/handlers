@@ -28,7 +28,7 @@ function statusImagesUrl(status: string): string {
     return baseUrl + "fails.txt";
 }
 
-@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()[]/on::Repo()/channel::ChatChannel()")
+@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()/on::Repo()/channel::ChatChannel()")
 @Tags("ci")
 export class BuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
@@ -36,7 +36,7 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
         let plan: Plan = new Plan();
 
         let repo = build.on();
-        let messageText = `BuildStatusHandler: ${repo.name()}:${build.name()}:${build.status()}`;
+        let messageText = `BuildStatusHandler: #${build.name()}: ${build.status()}`;
         console.log(`BuildStatusHandler: messageText=${messageText}`);
         let channels = repo.channel();
         if (channels.length < 1) {
@@ -86,15 +86,17 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
 
 export const buildStatusHandler = new BuildStatusHandler();
 
-@EventHandler("AllBuildStatusHandler", "Send all build events to a single channel", "/Build()")
+@EventHandler("AllBuildStatusHandler", "Send all build events to a single channel", "/Build()/on::Repo()")
 @Tags("ci")
 export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
         let build: Build = event.root();
         let plan: Plan = new Plan();
 
-        let message = new Message(`AllBuildStatusHandler: ${build.id()}:${build.name()}:${build.status()}`);
-        console.log(`AllBuildStatusHandler: body=${message.body}`);
+        let repo = build.on();
+        let messageText = `AllBuildStatusHandler: ${repo.name()}#${build.name()}: ${build.status()}`;
+        console.log(`AllBuildStatusHandler: messageText=${messageText}`);
+        let message = new Message(messageText);
         const channelId = "C4UC96BK5";
         message.withChannelId(channelId);
         plan.add(message);
