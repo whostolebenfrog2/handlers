@@ -140,7 +140,7 @@ export class SendWinsResponder implements HandleResponse<any> {
     buildName: string;
 
     @Parameter({
-        pattern: "^\\w+$",
+        pattern: "^.+$",
         minLength: 1,
         maxLength: 200,
         required: true
