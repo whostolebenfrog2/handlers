@@ -181,14 +181,15 @@ export class SendWinsResponder implements HandleResponse<any> {
             color = "#36a64f";
         }
 
-        let body = `{
-  "attachments": [{
-    "fallback": "${fallback}",
-    "color": "${color}",
-    "title": "${this.buildName} ${this.buildStatus}!",
-    "image_url": "${image}"
-  }]
-}`;
+        const attachment = {
+            fallback: fallback,
+            color: color,
+            title: `${this.buildName} ${this.buildStatus}!`,
+            image_url: image
+        };
+        const msgJsonString = `{ "attachments": [ ${JSON.stringify(attachment)} ] }`;
+        console.log(`SendWinsResponder: msg=${msgJsonString}`);
+        const body = `${fallback} ${image}`;
         console.log(`SendWinsResponder: body=${body}`);
         let message = new Message(body);
         console.log(`SendWinsResponder: channelId=${this.channelId}`);
