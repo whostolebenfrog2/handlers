@@ -25,7 +25,7 @@ function statusImagesUrl(status: string): string {
     if (buildGood(status)) {
         return baseUrl + "wins.txt";
     }
-    return baseUrl + "wins.txt";
+    return baseUrl + "fails.txt";
 }
 
 @EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()[]/on::Repo()/channel::ChatChannel()")
@@ -45,6 +45,11 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
         for (let channel of channels) {
             console.log(`BuildStatusHandler: channel=${channel.name()}`);
             plan.add(new Message(messageText).withChannelId(channel.id()));
+        }
+
+        if (build.status() == "Pending") {
+            console.log(`build ${build.name()} is ${build.status()}`);
+            return plan;
         }
 
         let urlsUrl: string = statusImagesUrl(build.status());
@@ -93,6 +98,11 @@ export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
         const channelId = "C4UC96BK5";
         message.withChannelId(channelId);
         plan.add(message);
+
+        if (build.status() == "Pending") {
+            console.log(`build ${build.name()} is ${build.status()}`);
+            return plan;
+        }
 
         let urlsUrl: string = statusImagesUrl(build.status());
 
