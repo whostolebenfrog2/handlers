@@ -1,6 +1,6 @@
 group: atomisthqa
 artifact: handlers
-version: "0.32.3"
+version: "0.32.4"
 requires: "0.24.0"
 dependencies:
 extensions:
