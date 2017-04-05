@@ -11,15 +11,32 @@ import { Match } from "@atomist/rug/tree/PathExpression";
 import { ResponseHandler, EventHandler, Tags, Parameter } from "@atomist/rug/operations/Decorators";
 import { Build } from "@atomist/cortex/stub/Build";
 
-@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()/on::Repo()/channel::ChatChannel()")
+function buildGood(status: string): boolean {
+    if (status == "Passed" || status == "Fixed") {
+        return true;
+    } else if (status == "Failed" || status == "Broken" || status == "Still Failing") {
+        return false;
+    }
+    return false; // I guess
+}
+
+function statusImagesUrl(status: string): string {
+    const baseUrl = "https://s3.amazonaws.com/static-files-for-public-consumption/lists/";
+    if (buildGood(status)) {
+        return baseUrl + "wins.txt";
+    }
+    return baseUrl + "wins.txt";
+}
+
+@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()[]/on::Repo()/channel::ChatChannel()")
 @Tags("ci")
 export class BuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
-        let root: Build = event.root();
+        let build: Build = event.root();
         let plan: Plan = new Plan();
 
-        let repo = root.on();
-        let messageText = `BuildStatusHandler: ${repo.name()}:${root.name()}:${root.status()}`;
+        let repo = build.on();
+        let messageText = `BuildStatusHandler: ${repo.name()}:${build.name()}:${build.status()}`;
         console.log(`BuildStatusHandler: messageText=${messageText}`);
         let channels = repo.channel();
         if (channels.length < 1) {
@@ -30,20 +47,23 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
             plan.add(new Message(messageText).withChannelId(channel.id()));
         }
 
+        let urlsUrl: string = statusImagesUrl(build.status());
+
         let execute: Respondable<Execute> = {
             instruction: {
                 name: "http",
                 kind: "execute",
                 parameters: {
                     method: "get",
-                    url: `https://s3.amazonaws.com/static-files-for-public-consumption/lists/wins.txt`
+                    url: urlsUrl
                 }
             },
             onSuccess: {
                 kind: "respond",
                 name: "SendWinsImage",
                 parameters: {
-                    buildName: root.name(),
+                    buildName: build.name(),
+                    buildStatus: build.status(),
                     channelId: channels[0].id()
                 }
             },
@@ -65,14 +85,16 @@ export const buildStatusHandler = new BuildStatusHandler();
 @Tags("ci")
 export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
-        let root: Build = event.root();
+        let build: Build = event.root();
         let plan: Plan = new Plan();
 
-        let message = new Message(`AllBuildStatusHandler: ${root.id()}:${root.name()}:${root.status()}`);
+        let message = new Message(`AllBuildStatusHandler: ${build.id()}:${build.name()}:${build.status()}`);
         console.log(`AllBuildStatusHandler: body=${message.body}`);
         const channelId = "C4UC96BK5";
         message.withChannelId(channelId);
         plan.add(message);
+
+        let urlsUrl: string = statusImagesUrl(build.status());
 
         let execute: Respondable<Execute> = {
             instruction: {
@@ -80,13 +102,17 @@ export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
                 kind: "execute",
                 parameters: {
                     method: "get",
-                    url: `https://s3.amazonaws.com/static-files-for-public-consumption/lists/wins.txt`
+                    url: urlsUrl
                 }
             },
             onSuccess: {
                 kind: "respond",
                 name: "SendWinsImage",
-                parameters: { buildName: root.name(), channelId: channelId }
+                parameters: {
+                    buildName: build.name(),
+                    buildStatus: build.status(),
+                    channelId: channelId
+                }
             },
             onError: {
                 kind: "respond",
@@ -119,6 +145,14 @@ export class SendWinsResponder implements HandleResponse<any> {
         maxLength: 200,
         required: true
     })
+    buildStatus: string;
+
+    @Parameter({
+        pattern: "^\\w+$",
+        minLength: 1,
+        maxLength: 200,
+        required: true
+    })
     channelId: string;
 
     handle(response: Response<any>): Plan {
@@ -128,11 +162,18 @@ export class SendWinsResponder implements HandleResponse<any> {
         let bodyText = response.body();
         let images = bodyText.split('\n');
         let image = images[Math.round(Math.random() * (images.length))];
+        let fallback: string = `Oh no, build ${this.buildName} failed!`;
+        let color: string = "#a63636";
+        if (buildGood(this.buildStatus)) {
+            fallback = `Yippee, build ${this.buildName} succeeded!!!`;
+            color = "#36a64f";
+        }
+
         let body = `{
   "attachments": [{
-    "fallback": "Yipee!!!",
-    "color": "#36a64f",
-    "title": "${this.buildName} Success!",
+    "fallback": "${fallback}",
+    "color": "${color}",
+    "title": "${this.buildName} ${this.buildStatus}!",
     "image_url": "${image}"
   }]
 }`;
