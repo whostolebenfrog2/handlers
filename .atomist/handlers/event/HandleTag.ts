@@ -1,4 +1,4 @@
-import { HandleEvent, Message, Plan } from '@atomist/rug/operations/Handlers';
+import { HandleEvent, DirectedMessage, ChannelAddress, Plan } from '@atomist/rug/operations/Handlers';
 import { GraphNode, Match } from '@atomist/rug/tree/PathExpression';
 import { EventHandler, Tags } from '@atomist/rug/operations/Decorators';
 import { Tag } from "@atomist/cortex/Tag";
@@ -11,10 +11,8 @@ import { Tag } from "@atomist/cortex/Tag";
 export class HandleTag implements HandleEvent<Tag, GraphNode> {
     handle(event: Match<Tag, GraphNode>): Plan {
         let root: Tag = event.root();
-        let plan: Plan = new Plan();
-        let message = new Message(`New Tag \`${root.name()}\` detected`);
-        message.channelId = "general";
-        return plan.add(message);
+        let message = new DirectedMessage(`New Tag \`${root.name}\` detected`, new ChannelAddress("general"));
+        return Plan.ofMessage(message);
     }
 }
 

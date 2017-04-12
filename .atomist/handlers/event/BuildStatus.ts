@@ -3,7 +3,8 @@ import {
     Response,
     HandleResponse,
     Execute,
-    Message,
+    DirectedMessage,
+    ChannelAddress,
     Plan,
     Respondable
 } from "@atomist/rug/operations/Handlers";
@@ -28,31 +29,31 @@ function statusImagesUrl(status: string): string {
     return baseUrl + "fails.txt";
 }
 
-@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()/on::Repo()/channel::ChatChannel()")
+@EventHandler("BuildStatusHandler", "Send build events to repo channel", "/Build()/repo::Repo()/channel::ChatChannel()")
 @Tags("ci")
 export class BuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
         let build: Build = event.root();
         let plan: Plan = new Plan();
 
-        let repo = build.on();
-        let messageText = `BuildStatusHandler: #${build.name()}: ${build.status()}`;
+        let repo = build.repo;
+        let messageText = `BuildStatusHandler: #${build.name}: ${build.status}`;
         console.log(`BuildStatusHandler: messageText=${messageText}`);
-        let channels = repo.channel();
+        let channels = repo.channels;
         if (channels.length < 1) {
             console.log(`BuildStatusHandler: no channels associated with build repo: ${messageText}`);
         }
         for (let channel of channels) {
-            console.log(`BuildStatusHandler: channel=${channel.name()}`);
-            plan.add(new Message(messageText).withChannelId(channel.id()));
+            console.log(`BuildStatusHandler: channel=${channel.name}`);
+            plan.add(new DirectedMessage(messageText, new ChannelAddress(channel.id)));
         }
 
-        if (build.status() == "Pending") {
-            console.log(`build ${build.name()} is ${build.status()}`);
+        if (build.status == "started") {
+            console.log(`build ${build.name} is ${build.status}`);
             return plan;
         }
 
-        let urlsUrl: string = statusImagesUrl(build.status());
+        let urlsUrl: string = statusImagesUrl(build.status);
 
         let execute: Respondable<Execute> = {
             instruction: {
@@ -67,15 +68,15 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
                 kind: "respond",
                 name: "SendWinsImage",
                 parameters: {
-                    buildName: build.name(),
-                    buildStatus: build.status(),
-                    channelId: channels[0].id()
+                    buildName: build.name,
+                    buildStatus: build.status,
+                    channelId: channels[0].id
                 }
             },
             onError: {
                 kind: "respond",
                 name: "GetErrorMessage",
-                parameters: { channelId: channels[0].id() }
+                parameters: { channelId: channels[0].id }
             }
         }
         plan.add(execute);
@@ -86,27 +87,27 @@ export class BuildStatusHandler implements HandleEvent<Build, Build> {
 
 export const buildStatusHandler = new BuildStatusHandler();
 
-@EventHandler("AllBuildStatusHandler", "Send all build events to a single channel", "/Build()/on::Repo()")
+@EventHandler("AllBuildStatusHandler", "Send all build events to a single channel", "/Build()/repo::Repo()")
 @Tags("ci")
 export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
     handle(event: Match<Build, Build>): Plan {
         let build: Build = event.root();
         let plan: Plan = new Plan();
 
-        let repo = build.on();
-        let messageText = `AllBuildStatusHandler: ${repo.name()}#${build.name()}: ${build.status()}`;
+        let repo = build.repo;
+        let messageText = `AllBuildStatusHandler: ${repo.name}#${build.name}: ${build.status}`;
         console.log(`AllBuildStatusHandler: messageText=${messageText}`);
-        let message = new Message(messageText);
-        const channelId = "C4UC96BK5";
-        message.withChannelId(channelId);
+        let message = new DirectedMessage(messageText, new ChannelAddress(
+            "C4UC96BK5"
+        ));
         plan.add(message);
 
-        if (build.status() == "Pending") {
-            console.log(`build ${build.name()} is ${build.status()}`);
+        if (build.status == "started") {
+            console.log(`build ${build.name} is ${build.status}`);
             return plan;
         }
 
-        let urlsUrl: string = statusImagesUrl(build.status());
+        let urlsUrl: string = statusImagesUrl(build.status);
 
         let execute: Respondable<Execute> = {
             instruction: {
@@ -121,15 +122,15 @@ export class AllBuildStatusHandler implements HandleEvent<Build, Build> {
                 kind: "respond",
                 name: "SendWinsImage",
                 parameters: {
-                    buildName: build.name(),
-                    buildStatus: build.status(),
-                    channelId: channelId
+                    buildName: build.name,
+                    buildStatus: build.status,
+                    channelId: "C4UC96BK5"
                 }
             },
             onError: {
                 kind: "respond",
                 name: "GetErrorMessage",
-                parameters: { channelId: channelId }
+                parameters: { channelId: "C4UC96BK5" }
             }
         }
         plan.add(execute);
@@ -191,9 +192,8 @@ export class SendWinsResponder implements HandleResponse<any> {
         console.log(`SendWinsResponder: msg=${msgJsonString}`);
         const body = `${fallback} ${image}`;
         console.log(`SendWinsResponder: body=${body}`);
-        let message = new Message(body);
+        let message = new DirectedMessage(body, new ChannelAddress(this.channelId));
         console.log(`SendWinsResponder: channelId=${this.channelId}`);
-        message.withChannelId(this.channelId);
         plan.add(message);
         return plan;
     }
@@ -216,7 +216,7 @@ export class GetErrorMessage implements HandleResponse<any> {
         let plan: Plan = new Plan();
 
         console.log(`GetErrorMessage: channelId=${this.channelId}`);
-        return Plan.ofMessage(new Message("failed to fetch success image URLs").withChannelId(this.channelId));
+        return Plan.ofMessage(new DirectedMessage("failed to fetch success image URLs", new ChannelAddress(this.channelId)));
     }
 }
 
