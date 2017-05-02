@@ -52,3 +52,19 @@ editor:
     - "description": "Simple command to tag a sha in GitHub"
     - "intent": "create tag"
 
+---
+kind: "operation"
+client: "atomist-bot"
+editor:
+  name: "AddTypeScriptEditor"
+  group: "atomist"
+  artifact: "rug-rugs"
+  version: "0.29.0"
+  origin:
+    repo: "https://github.com/atomist/rug-rugs.git"
+    branch: "0f425945c62957ccc2ccb63e9980e6f78b97a4a1"
+    sha: "0f42594"
+  parameters:
+    - "editorName": "Test"
+    - "description": "Test"
+
