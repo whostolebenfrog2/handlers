@@ -1,5 +1,5 @@
 {
     "enable": {
-        "foo": true
+        "foo": false
     }
 }
