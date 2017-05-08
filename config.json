@@ -1,1 +1,5 @@
-{ "enable-foo": true}
+{
+    "enable": {
+        "foo": true
+    }
+}
