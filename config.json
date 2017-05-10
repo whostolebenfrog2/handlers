@@ -1,5 +1,8 @@
 {
     "enable": {
         "foo": true
-    }
+    },
+    "compilerOptions": {
+          "target": "es6"
+      }
 }
