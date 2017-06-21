@@ -52,3 +52,13 @@ editor:
     - "description": "Simple command to tag a sha in GitHub"
     - "intent": "create tag"
 
+---
+kind: "operation"
+client: "com.atomist:rug"
+version: "1.0.0-20170609011313"
+editor:
+  name: "UpdateRug"
+  group: "atomist"
+  artifact: "rug-rugs"
+  version: "0.31.1"
+
