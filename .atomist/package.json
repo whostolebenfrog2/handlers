@@ -1,5 +1,23 @@
 {
   "dependencies": {
-    "@atomist/rugs": "^0.24.0"
+    "@atomist/rugs": "^1.0.0-m.5"
+  },
+  "name": "@atomisthqa/handlers",
+  "version": "0.32.11",
+  "author": "atomisthqa",
+  "description": "Atomist Rugs from atomisthqa/handlers",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atomisthqa/handlers.git"
+  },
+  "homepage": "https://github.com/atomisthqa/handlers#readme",
+  "bugs": {
+    "url": "https://github.com/atomisthqa/handlers/issues"
+  },
+  "atomist": {
+    "requires": "[1.0.0-m.4,2.0.0)",
+    "extensions": {
+      "com.atomist.rug:rug-function-http": "0.2.0"
+    }
   }
 }
