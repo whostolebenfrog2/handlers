@@ -1,2 +1,4 @@
-node_modules
-**/*.js
+target/
+node_modules/
+*.js
+npm-debug.log
