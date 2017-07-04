@@ -29,4 +29,3 @@ notifications:
 cache:
   directories:
   - "$HOME/.atomist"
-  - "test"
