@@ -6,8 +6,11 @@ set -o pipefail
 declare Pkg=travis-build
 declare Version=0.3.0
 
-echo "Build success!"
-exit 0
+#echo "Build success!"
+#exit 0
+
+echo "Not hot dog"
+exit 1
 
 function msg() {
     echo "$Pkg: $*"
