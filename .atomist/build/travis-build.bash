@@ -6,6 +6,12 @@ set -o pipefail
 declare Pkg=travis-build
 declare Version=0.3.0
 
+#echo "Build success!"
+#exit 0
+
+echo "Not hot dog"
+exit 1
+
 function msg() {
     echo "$Pkg: $*"
 }
@@ -24,16 +30,19 @@ function main () {
         return 1
     fi
 
-    local version
-    version=$(echo "$formula" | sed -n '/^ *url /s,.*/\([0-9]*\.[0-9]*\.[0-9]*\)/.*,\1,p')
-    if [[ $? -ne 0 || ! $version ]]; then
-        err "failed to parse brew formula for version: $version"
-        err "$formula"
-        return 1
+    local cli_version
+    cli_version=$(echo "$formula" | awk '$1 == "version" { print $2 }' | sed 's/"//g')
+    if [[ $? -ne 0 || ! $cli_version ]]; then
+        cli_version=$(echo "$formula" | sed -En '/^ *url /s/.*\/([0-9]+\.[0-9]+\.[0-9]+(-(m|rc)\.[0-9]+)?)\/.*/\1/p')
+        if [[ $? -ne 0 || ! $cli_version ]]; then
+            err "failed to parse brew formula for version: $cli_version"
+            err "$formula"
+            return 1
+        fi
     fi
-    msg "rug CLI version: $version"
+    msg "rug CLI version: $cli_version"
 
-    local rug=$HOME/.atomist/rug-cli-$version/bin/rug
+    local rug=$HOME/.atomist/rug-cli-$cli_version/bin/rug
     if [[ ! -x $rug ]]; then
         msg "downloading rug CLI"
         if ! mkdir -p "$HOME/.atomist"; then
@@ -41,8 +50,8 @@ function main () {
             return 1
         fi
 
-        local rug_cli_url=https://github.com/atomist/rug-cli/releases/download/$version/rug-cli-$version-bin.tar.gz
-        local rug_cli_tgz=$HOME/.atomist/rug-cli-$version.tar.gz
+        local rug_cli_url=https://github.com/atomist/rug-cli/releases/download/$cli_version/rug-cli-$cli_version-bin.tar.gz
+        local rug_cli_tgz=$HOME/.atomist/rug-cli-$cli_version.tar.gz
         if ! curl -s -f -L -o "$rug_cli_tgz" "$rug_cli_url"; then
             err "failed to download rug CLI from $rug_cli_url"
             return 1
@@ -55,13 +64,13 @@ function main () {
     fi
     rug="$rug -qX"
 
-    #if [[ -f .atomist/package.json ]]; then
-    #    msg "running npm install"
-    #    if ! ( cd .atomist && npm install ); then
-    #        err "npm install failed"
-    #        return 1
-    #    fi
-    #fi
+    if [[ -f .atomist/package.json ]]; then
+        msg "running npm install"
+        if ! ( cd .atomist && npm install ); then
+            err "npm install failed"
+            return 1
+        fi
+    fi
 
     local build_dir=.atomist/build
     if ! cp "$build_dir/cli-build.yml" $HOME/.atomist/cli.yml; then
@@ -124,8 +133,13 @@ function main () {
             return 1
         fi
 
-        msg "publishing archive"
-        if ! $rug publish -a "$project_version"; then
+        msg "publishing archive for atomisthqa"
+        if ! $rug publish --archive-version "$project_version" --archive-group "atomisthqa"; then
+            err "failed to publish archive $project_version"
+            return 1
+        fi
+        msg "publishing archive for atomisthq"
+        if ! $rug publish --archive-version "$project_version" --archive-group "atomisthq"; then
             err "failed to publish archive $project_version"
             return 1
         fi

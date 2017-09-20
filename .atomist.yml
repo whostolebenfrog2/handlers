@@ -18,3 +18,37 @@ editor:
     - "maven_user": "t************h"
     - "maven_token": "A***********************************************************************i"
 
+---
+kind: "operation"
+client: "rug-cli 0.29.0-SNAPSHOT"
+editor:
+  name: "AddTypeScriptEventHandler"
+  group: "atomist-rugs"
+  artifact: "rug-editors"
+  version: "0.23.0"
+  origin:
+    repo: "https://357fa2ba6de62595b938013dac8be8ad996a84a9@github.com/atomist-rugs/rug-editors.git"
+    branch: "master"
+    sha: "1bc7539"
+  parameters:
+    - "handlerName": "Tag"
+    - "description": "Simple handler to catch any Tag event"
+    - "pathExpression": "/Tag()"
+
+---
+kind: "operation"
+client: "rug-cli 0.29.0-SNAPSHOT"
+editor:
+  name: "AddTypeScriptCommandHandler"
+  group: "atomist-rugs"
+  artifact: "rug-editors"
+  version: "0.23.0"
+  origin:
+    repo: "https://357fa2ba6de62595b938013dac8be8ad996a84a9@github.com/atomist-rugs/rug-editors.git"
+    branch: "master"
+    sha: "1bc7539"
+  parameters:
+    - "handlerName": "Tag"
+    - "description": "Simple command to tag a sha in GitHub"
+    - "intent": "create tag"
+
