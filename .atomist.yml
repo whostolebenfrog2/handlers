@@ -52,3 +52,19 @@ editor:
     - "description": "Simple command to tag a sha in GitHub"
     - "intent": "create tag"
 
+---
+kind: "operation"
+client: "com.atomist:rug"
+version: "1.0.0-20170816122823"
+editor:
+  name: "AddTravisWebhookEditor"
+  group: "atomist"
+  artifact: "enrollment-rugs"
+  version: "0.3.68"
+  origin:
+    repo: "git@github.com:atomisthq/enrollment-rugs.git"
+    branch: "1ef47a3059e4fbb20326ff4365c4ef7f06502165"
+    sha: "1ef47a3"
+  parameters:
+    - "atomistWebhookUrl": "https://webhook-staging.atomist.services/atomist/travis/teams/T1L0VDKJP"
+
