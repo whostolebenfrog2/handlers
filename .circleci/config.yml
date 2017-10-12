@@ -141,9 +141,9 @@ workflows:
           requires:
             - three1
       - staging:
-          required:
+          requires:
             - three0
             - four0
       - promote:
-          required:
+          requires:
             - staging
