@@ -1,97 +1,72 @@
-# Javascript Node CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-javascript/ for more details
-#
 version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:8.4
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - checkout
       - run: env
-
   one0:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   one1:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   one2:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   one3:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   test:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   two0:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   two1:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   publish:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   three0:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   three1:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   four0:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   staging:
     docker:
       - image: circleci/node:8.4
     steps:
       - run: env
-
   promote:
     docker:
       - image: circleci/node:8.4
