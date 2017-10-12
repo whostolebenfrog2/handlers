@@ -62,7 +62,37 @@ jobs:
     steps:
       - run: env
 
+  publish:
+    docker:
+      - image: circleci/node:8.4
+    steps:
+      - run: env
+
+  three0:
+    docker:
+      - image: circleci/node:8.4
+    steps:
+      - run: env
+
+  three1:
+    docker:
+      - image: circleci/node:8.4
+    steps:
+      - run: env
+
+  four0:
+    docker:
+      - image: circleci/node:8.4
+    steps:
+      - run: env
+
   deploy:
+    docker:
+      - image: circleci/node:8.4
+    steps:
+      - run: env
+
+  promote:
     docker:
       - image: circleci/node:8.4
     steps:
@@ -70,7 +100,7 @@ jobs:
 
 workflows:
   version: 2
-  downstream:
+  cd_pipeline:
     jobs:
       - build
       - one0:
@@ -110,7 +140,10 @@ workflows:
       - four0:
           requires:
             - three1
-      - promote:
+      - deploy:
           required:
             - three0
             - four0
+      - promote:
+          required:
+            - deploy
