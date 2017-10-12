@@ -86,7 +86,7 @@ jobs:
     steps:
       - run: env
 
-  deploy:
+  staging:
     docker:
       - image: circleci/node:8.4
     steps:
@@ -140,10 +140,10 @@ workflows:
       - four0:
           requires:
             - three1
-      - deploy:
+      - staging:
           required:
             - three0
             - four0
       - promote:
           required:
-            - deploy
+            - staging
