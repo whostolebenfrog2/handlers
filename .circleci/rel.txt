@@ -1,5 +1,6 @@
 # https://circleci.com/workflow-run/c493ac93-5a85-4177-9f11-f227fba06e16
-# gawk -F = '$1 == "CIRCLE_WORKFLOW_JOB_ID" { id = $2 } $1 == "CIRCLE_STAGE" { name = $2 } $1 == "CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS" { up = $2 } $1 == "CIRCLE_WORKFLOW_CONCURRENCY_MAP" { map = $2 } $0 == "" { m[id]["name"] = name; m[id]["upstream"] = up; m[id]["map"] = map } END { m[id]["name"] = name; m[id]["upstream"] = up; m[id]["map"] = map; for (i in m) { split(m[i]["upstream"], u, ","); ups = ""; for (j in u) { ups = ups "," m[u[j]]["name"] } sub(/^,/, "", ups); print m[i]["name"] ":" ups } }' rel.txt | sort
+# gawk -F = '$1 == "CIRCLE_WORKFLOW_JOB_ID" { id = $2 } $1 == "CIRCLE_STAGE" { name = $2 } $1 == "CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS" { up = $2 } $1 == "CIRCLE_WORKFLOW_CONCURRENCY_MAP" { map = $2 } $0 == "" { m[id]["name"] = name; m[id]["upstream"] = up; m[id]["map"] = map } END { for (i in m) { split(m[i]["upstream"], u, ","); ups = ""; for (j in u) { ups = ups "," m[u[j]]["name"] } sub(/^,/, "", ups); print m[i]["name"] ":" ups } }' rel.txt | sort
+
 CIRCLE_WORKFLOW_JOB_ID=e6d306d0-92bf-48e4-8ad7-94e9a7726d4e
 CIRCLE_BUILD_NUM=2
 NODE_VERSION=8.4.0
@@ -573,3 +574,4 @@ CIRCLE_SHELL_ENV=/tmp/.bash_env-59df79663391e300015994c4-0-build
 DEBIAN_FRONTEND=noninteractive
 CIRCLE_PROJECT_REPONAME=handlers
 _=/usr/bin/env
+
