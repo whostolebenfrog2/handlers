@@ -122,3 +122,8 @@ workflows:
       - promote:
           requires:
             - staging
+            
+notify:
+  webhooks:
+    - url: https://webhook-staging.atomist.services/atomist/circle/teams/T1L0VDKJP
+    
