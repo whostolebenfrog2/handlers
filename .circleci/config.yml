@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.4
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: env
+notify:
+  webhooks:
+    - url: https://webhook-staging.atomist.services/atomist/circle/teams/T1L0VDKJP
+    
